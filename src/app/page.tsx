@@ -16,6 +16,7 @@ export default async function Dashboard() {
         <TableEnviroment/>
         <TableGas/>
         <TableWeather/>
+        timestamp
       </div>
       </div>
   );
