@@ -11,7 +11,8 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), { 
 
 const Map = () => {
   const [leaflet, setLeaflet] = useState<any>(null);
-  const position: [number, number] = [13.7563, 100.5018]; 
+  const position1: [number, number] = [13.7563, 100.5018]; 
+  const position2: [number, number] = [13.6553, 100.5018];
 
 
   useEffect(() => {
@@ -31,16 +32,24 @@ const Map = () => {
     });
 
   return (
-    <div className="w-[40vw] h-[35vw] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden mt-10 ml-5">
-      <MapContainer center={position} zoom={6} className="w-[50vw] h-[50vw]">
+    <div className="w-[70vw] h-[40vw] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden mt-10 ml-5">
+      <MapContainer center={position1} zoom={10} className="w-full h-full">
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={position} icon={numberMarker(10)}>
+        <Marker position={position1} icon={numberMarker(10)}>
           <Popup>
             <div className="text-center">
               <strong>จุดที่ 1</strong>
+              <p>กรุงเทพมหานคร</p>
+            </div>
+          </Popup>
+        </Marker>
+        <Marker position={position2} icon={numberMarker(20)}>
+          <Popup>
+            <div className="text-center">
+              <strong>จุดที่ 2</strong>
               <p>กรุงเทพมหานคร</p>
             </div>
           </Popup>
