@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const TopNav = () => {
   return (
-    <div className="bg-blue-300 h-20 w-full text-black px-4 flex items-center">
+    <div className="bg-blue-300 h-10 md:h-15 lg:h-20 w-full text-black px-4 flex items-center">
       <p className="font-semibold text-lg">Air Quality</p>
       <div className="ml-auto flex space-x-6">
         {TOP_MENU.map((menu) => (
