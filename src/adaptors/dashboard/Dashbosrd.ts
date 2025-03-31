@@ -4,6 +4,7 @@ import { Environment } from "./Environment";
 import { Gas } from "./Gas";
 import { Weather } from "./Weather";
 import { Expose } from "class-transformer";
+import { MapProps } from "@/components/map/Map";
 
 export class Dashboard implements IDashboard {
   timestamp = "";
@@ -63,17 +64,16 @@ export class Dashboard implements IDashboard {
   }
 
   @Expose({ toClassOnly: true })
-  get pointData(): {
-    title: string;
-    latitude: number;
-    longitude: number;
-    "pm2.5": number;
-  }[] {
+  get pointData(): MapProps[] {
     const bangkok1 = {
       title: "bangkok1",
       latitude: this.latitude,
       longitude: this.longitude,
       "pm2.5": this.airQuality.pm25,
+      pm10: this.airQuality.pm10,
+      pm100: this.airQuality.pm100,
+      o2: this.airQuality.o2,
+      co2: this.airQuality.co2,
     };
 
     return [bangkok1];

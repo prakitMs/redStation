@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
+import MarkerLog from "../marker-log/MarkerLog";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -20,15 +21,20 @@ const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
   ssr: false,
 });
 
-interface MapProps {
+export interface MapProps {
   title: string;
   latitude: number;
   longitude: number;
   "pm2.5": number;
+  pm10: number;
+  pm100: number;
+  o2: number;
+  co2: number;
 }
 
 const Map = ({ latitude, longitude, ...props }: MapProps) => {
   const [leaflet, setLeaflet] = useState<any>(null);
+  const [showLog, setShowLog] = useState(false);
   const position1: [number, number] = [latitude, longitude];
 
   // props["pm2.5"]
@@ -40,30 +46,58 @@ const Map = ({ latitude, longitude, ...props }: MapProps) => {
 
   if (!leaflet) return <div>Loading map...</div>;
 
-  const numberMarker = (num: number) =>
-    leaflet.divIcon({
-      className: "custom-marker",
-      html: `<div class="marker-number">${num}</div>`,
-      iconSize: [40, 40],
-      iconAnchor: [15, 30],
-    });
+  const numberMarker = (pmValue: number) => {
+    const getColor = (value: number) => {
+      if (value <= 50) return "green"; // อากาศดี
+      if (value <= 100) return "yellow"; // ปานกลาง
+      if (value <= 150) return "orange"; // มีผลต่อสุขภาพ
+      return "red"; // อันตราย
+    };
 
+    const handleMarkerClick = () => {
+      setShowLog(true); // Show the MarkerLog when the marker is clicked
+    };
+    return leaflet.divIcon({
+      className: "rounded-full",
+      html: `<div style="
+            background-color: ${getColor(pmValue)};
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 40px; 
+            height: 40px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+          ">
+          ${pmValue}
+          </div>`,
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
+  };
+  const handleMarkerClick = () => {
+    setShowLog(true); // Show the MarkerLog when the marker is clicked
+  };
   return (
-    <div className="border-4 border-indigo-100 lg:max-w-[70vw] max-w-[95vw] h-[40vw] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden mt-10 ml-5">
-      <MapContainer center={position1} zoom={10} className="w-full h-full">
+    <div className="border-4 relative border-indigo-100 lg:h-[80vh] lg:max-w-[70vw] max-w-[95vw] h-[80vh] md:min-h-[70vh] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden mt-10 ml-5">
+      <MapContainer center={position1} zoom={10} className="w-full h-full z-10">
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={position1} icon={numberMarker(props["pm2.5"])}>
-          <Popup>
-            <div className="text-center">
-              <strong>จุดที่ 1</strong>
-              <p>กรุงเทพมหานคร</p>
-            </div>
-          </Popup>
-        </Marker>
+        <Marker
+          position={position1}
+          icon={numberMarker(props["pm2.5"])}
+          eventHandlers={{
+            click: handleMarkerClick, // Trigger the function on click
+          }}
+        />
       </MapContainer>
+
+      {showLog && <MarkerLog {...props} onClose={() => setShowLog(false)} />}
     </div>
   );
 };
