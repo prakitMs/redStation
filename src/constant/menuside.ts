@@ -74,8 +74,16 @@ export const SIDE_MENU: MENUS[] = [
     subMenu: [
       {
         label: "Wind Direct",
-        link: PAGE_ROUTE.direct,
+        link: PAGE_ROUTE.windDirect,
       },
+      {
+        label:"wind Speed",
+        link:PAGE_ROUTE.windSpeed
+      },
+      {
+        label:"Rainfall",
+        link: PAGE_ROUTE.rainfall
+      }
     ],
   },
 ];

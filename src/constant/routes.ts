@@ -13,7 +13,9 @@ export const PAGE_ROUTE = {
   ammonia: "ammonia",
   nitrogenDioxide: "nitrogen-dioxide",
   sulferDioxide: "sulfer-dioxide",
-  direct: "direct",
+  windDirect: "wind-direct",
+  windSpeed:"wind-speed",
+  rainfall:"rainfall",
 };
 export const API_ROUTE = {
   dashboard: "/smartG/sensor",
