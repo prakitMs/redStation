@@ -10,7 +10,7 @@ const TopNav = () => {
           <Link
             href={menu.link}
             key={menu.label}
-            className="capitalize hover:underline"
+            className="capitalize hover:bg-[#3c83b3] hover:p-1 hover:rounded-xl"
           >
             {menu.label}
           </Link>

@@ -56,8 +56,8 @@ export class Dashboard implements IDashboard {
       title: "Weather",
       data: [
         { label: "Wind Direct", value: this.weather.direct },
-        { label: "Rainfall", value: this.weather.rain },
         { label: "Wind Speed", value: this.weather.speed },
+        { label: "Rainfall", value: this.weather.rain },
       ],
     };
     return [airQuality, environment, gas, weather];
