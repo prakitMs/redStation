@@ -1,3 +1,4 @@
+import Ammonia from "@/app/ammonia/page";
 import { PAGE_ROUTE } from "./routes";
 import { MENUS } from "@/types/Menu";
 
@@ -7,8 +8,8 @@ export const SIDE_MENU: MENUS[] = [
     hasSub: true,
     subMenu: [
       {
-        label: "Particulate Matter(PM)",
-        link: PAGE_ROUTE.pariculateMatter,
+        label: "Particulate Matter (PM)",
+        link: PAGE_ROUTE.particulateMatter,
       },
       {
         label: "Carbon Dioxide",
@@ -37,7 +38,7 @@ export const SIDE_MENU: MENUS[] = [
         link: PAGE_ROUTE.temperature,
       },
       {
-        label: "Ultarviolet(UV)",
+        label: "Ultraviolet(UV)",
         link: PAGE_ROUTE.uv,
       },
       {
@@ -51,11 +52,11 @@ export const SIDE_MENU: MENUS[] = [
     hasSub: true,
     subMenu: [
       {
-        label: "Carbon Monoxide(CO)",
+        label: "Carbon Monoxide",
         link: PAGE_ROUTE.carbonMonoxide,
       },
       {
-        label: "Ammonia(NH3)",
+        label: "Ammonia",
         link: PAGE_ROUTE.ammonia,
       },
       {
@@ -63,8 +64,8 @@ export const SIDE_MENU: MENUS[] = [
         link: PAGE_ROUTE.nitrogenDioxide,
       },
       {
-        label: "Sulfer Dioxide",
-        link: PAGE_ROUTE.sulferDioxide,
+        label: "Sulfur Dioxide",
+        link: PAGE_ROUTE.sulfurDioxide,
       },
     ],
   },
@@ -73,17 +74,17 @@ export const SIDE_MENU: MENUS[] = [
     hasSub: true,
     subMenu: [
       {
-        label: "Wind Direct",
-        link: PAGE_ROUTE.windDirect,
+        label: "Wind Direction",
+        link: PAGE_ROUTE.windDirection,
       },
       {
-        label:"wind Speed",
-        link:PAGE_ROUTE.windSpeed
+        label: "Wind Speed",
+        link: PAGE_ROUTE.windSpeed,
       },
       {
-        label:"Rainfall",
-        link: PAGE_ROUTE.rainfall
-      }
+        label: "Rainfall",
+        link: PAGE_ROUTE.rainfall,
+      },
     ],
   },
 ];

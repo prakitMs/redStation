@@ -1,7 +1,7 @@
 export const PAGE_ROUTE = {
   dashboard: "/",
-  data: "data",
-  pariculateMatter: "particulate-matter",
+  data: "particulate-matter",
+  particulateMatter: "particulate-matter",
   carbonDioxide: "carbon-dioxide",
   oxygen: "oxygen",
   humidity: "humidity",
@@ -12,10 +12,10 @@ export const PAGE_ROUTE = {
   carbonMonoxide: "carbon-monoxide",
   ammonia: "ammonia",
   nitrogenDioxide: "nitrogen-dioxide",
-  sulferDioxide: "sulfer-dioxide",
-  windDirect: "wind-direct",
-  windSpeed:"wind-speed",
-  rainfall:"rainfall",
+  sulfurDioxide: "sulfur-dioxide",
+  windDirection: "wind-direction",
+  windSpeed: "wind-speed",
+  rainfall: "rainfall",
 };
 export const API_ROUTE = {
   dashboard: "/smartG/sensor",
