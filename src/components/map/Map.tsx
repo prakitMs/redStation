@@ -48,10 +48,11 @@ const Map = ({ latitude, longitude, ...props }: MapProps) => {
 
   const numberMarker = (pmValue: number) => {
     const getColor = (value: number) => {
-      if (value <= 50) return "green"; // อากาศดี
-      if (value <= 100) return "yellow"; // ปานกลาง
-      if (value <= 150) return "orange"; // มีผลต่อสุขภาพ
-      return "red"; // อันตราย
+      if (value <= 25) return "#3EE3E6"; // อากาศดีมาก
+      if (value <= 50) return "#42C266"; // อากาศดี
+      if (value <= 100) return "#EBE65D"; // ปานกลาง
+      if (value <= 150) return "#EC8739"; // มีผลต่อสุขภาพ
+      return "#F74848"; // อันตราย
     };
 
     const handleMarkerClick = () => {
@@ -61,7 +62,7 @@ const Map = ({ latitude, longitude, ...props }: MapProps) => {
       className: "rounded-full",
       html: `<div style="
             background-color: ${getColor(pmValue)};
-            color: white;
+            color: black;
             font-weight: bold;
             display: flex;
             align-items: center;
@@ -82,7 +83,7 @@ const Map = ({ latitude, longitude, ...props }: MapProps) => {
     setShowLog(true); // Show the MarkerLog when the marker is clicked
   };
   return (
-    <div className="border-4 relative border-indigo-100 lg:h-[80vh] lg:max-w-[70vw] max-w-[95vw] h-[80vh] md:min-h-[70vh] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden mt-10 ml-5">
+    <div className="border-4 relative border-indigo-100 lg:h-[80vh] lg:max-w-[70vw] max-w-[95vw] h-[80vh] md:min-h-[70vh] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden mt-10 ml-5 mr-5 ">
       <MapContainer center={position1} zoom={10} className="w-full h-full z-10">
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
