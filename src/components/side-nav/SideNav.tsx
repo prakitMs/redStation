@@ -14,7 +14,7 @@ const SideNav = () => {
           <li key={label} className="text-white">
             {hasSub ? (
               <div>
-                <p className="text-gray-200 text-xl">{label}</p>
+                <p className="text-[#FFF4CA] text-xl">{label}</p>
                 <ul className="pl-4 space-y-2">
                   {subMenu?.map((sub) => {
                     const isActive = pathname === ["/", sub.link].join("");

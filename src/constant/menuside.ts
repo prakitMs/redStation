@@ -1,10 +1,11 @@
-import { FaTemperatureHigh } from "react-icons/fa";
+import { FaCloudRain, FaTemperatureHigh } from "react-icons/fa";
 import { PAGE_ROUTE } from "./routes";
 import { MENUS } from "@/types/Menu";
-import { MdCo2 } from "react-icons/md";
+import { MdCo2, MdWindPower } from "react-icons/md";
 import { SiO2 } from "react-icons/si";
 import { WiHumidity } from "react-icons/wi";
 import { AiFillSound } from "react-icons/ai";
+import { GiWindpump } from "react-icons/gi";
 
 export const SIDE_MENU: MENUS[] = [
   {
@@ -70,14 +71,17 @@ export const SIDE_MENU: MENUS[] = [
       },
       {
         label: "Ammonia",
+        icon: "nh3.svg",
         link: PAGE_ROUTE.ammonia,
       },
       {
         label: "Nitrogen Dioxide",
+        icon: "no2.svg",
         link: PAGE_ROUTE.nitrogenDioxide,
       },
       {
         label: "Sulfur Dioxide",
+        icon: "so2.svg",
         link: PAGE_ROUTE.sulfurDioxide,
       },
     ],
@@ -88,14 +92,17 @@ export const SIDE_MENU: MENUS[] = [
     subMenu: [
       {
         label: "Wind Direction",
+        icon: GiWindpump,
         link: PAGE_ROUTE.windDirection,
       },
       {
         label: "Wind Speed",
+        icon: MdWindPower,
         link: PAGE_ROUTE.windSpeed,
       },
       {
         label: "Rainfall",
+        icon: FaCloudRain,
         link: PAGE_ROUTE.rainfall,
       },
     ],
