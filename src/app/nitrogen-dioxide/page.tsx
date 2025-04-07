@@ -1,4 +1,5 @@
 import CalendarButton from "@/components/calendar-button";
+import StartLineChart from "@/components/chart";
 import SideNav from "@/components/side-nav";
 
 export default function NitrogenDioxide() {
@@ -9,8 +10,18 @@ export default function NitrogenDioxide() {
         <div className="text-xl text-black font-semibold bg-slate-200 w-56 p-1 rounded-b-md">
           Nitrogen Dioxide (NO<sub>2</sub>)
         </div>
-        <CalendarButton />
+
+        <div className="flex justify-center">
+          <div className="w-[40vw] m-5 border-4 border-black rounded-[12]">
+            <StartLineChart
+              title="Nitrogen Dioxide"
+              dataKey="pm10"
+              color="#f4a261"
+            />
+          </div>
+        </div>
       </div>
+      <CalendarButton />
     </div>
   );
 }

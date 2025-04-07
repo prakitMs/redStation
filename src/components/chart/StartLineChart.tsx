@@ -16,6 +16,7 @@ import {
 
 interface StartLineChartProps {
   dataKey: keyof typeof chartConfig;
+  title?: string;
   color?: string;
 }
 
@@ -48,61 +49,65 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const StartLineChart = ({ dataKey }: StartLineChartProps) => {
+const StartLineChart = ({ dataKey, title, color }: StartLineChartProps) => {
   return (
-    <Card className="bg-[#f7f7ed]">
-      <CardHeader>
-        <CardTitle>{[dataKey]}</CardTitle>
-        <CardDescription>Day logging</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              top: 20,
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="day"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Line
-              dataKey={dataKey}
-              type="natural"
-              stroke={
-                chartConfig?.[dataKey].color ?? chartConfig?.["pm2.5"].color
-              }
-              strokeWidth={2}
-              dot={{
-                fill: "#ffffff",
-              }}
-              activeDot={{
-                r: 6,
+    <div className="">
+      <Card className="bg-[#f7f7ed]">
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>Day logging</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={chartConfig}>
+            <LineChart
+              accessibilityLayer
+              data={chartData}
+              margin={{
+                top: 20,
+                left: 12,
+                right: 12,
               }}
             >
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="day"
+                tickLine={false}
+                axisLine={false}
+                tickMargin={8}
+                tickFormatter={(value) => value.slice(0, 3)}
               />
-            </Line>
-          </LineChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="line" />}
+              />
+              <Line
+                dataKey={dataKey}
+                type="natural"
+                stroke={
+                  color ??
+                  chartConfig?.[dataKey].color ??
+                  chartConfig?.["pm2.5"].color
+                }
+                strokeWidth={2}
+                dot={{
+                  fill: "#ffffff",
+                }}
+                activeDot={{
+                  r: 6,
+                }}
+              >
+                <LabelList
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={12}
+                />
+              </Line>
+            </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

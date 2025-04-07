@@ -16,7 +16,7 @@ function Calendar({
   ...props
 }: CalendarProps) {
   return (
-    <div>
+    <div className="">
       <h2 className="flex justify-center bg-slate-500 rounded-t-lg text-white">
         Pick date
       </h2>

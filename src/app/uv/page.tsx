@@ -1,21 +1,9 @@
 "use client";
 import CalendarButton from "@/components/calendar-button";
+import StartLineChart from "@/components/chart";
 import SideNav from "@/components/side-nav";
-import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
 
 export default function Ultraviolet() {
-  const [date, setDate] = useState<Date | undefined>(undefined);
-
-  const handleDateSelect = async (selectedDate: Date | undefined) => {
-    if (!selectedDate) return;
-
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    setDate(selectedDate);
-    console.log("Date selected:", selectedDate);
-  };
-
   return (
     <div className="flex h-screen">
       <SideNav />
@@ -24,8 +12,13 @@ export default function Ultraviolet() {
         <div className="text-xl text-black font-semibold bg-slate-200 w-40 p-1 rounded-b-md">
           Ultraviolet(UV)
         </div>
-        <CalendarButton />
+        <div className="flex justify-center">
+          <div className="w-[40vw] m-5 border-4 border-black rounded-[12] ">
+            <StartLineChart title="Ultraviolet" dataKey="pm1" />
+          </div>
+        </div>
       </div>
+      <CalendarButton />
     </div>
   );
 }
