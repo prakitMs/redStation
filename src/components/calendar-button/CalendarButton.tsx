@@ -4,7 +4,11 @@ import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { AiFillCloseSquare } from "react-icons/ai";
 
-const CalendarButton = () => {
+interface CalendarButtonProps {
+  onChange?: (date: Date) => void;
+}
+
+const CalendarButton = ({ onChange }: CalendarButtonProps) => {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
 
@@ -14,6 +18,7 @@ const CalendarButton = () => {
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     setDate(selectedDate);
+    onChange?.(selectedDate);
     setIsCalendarVisible(false);
     console.log("Date selected:", selectedDate);
   };

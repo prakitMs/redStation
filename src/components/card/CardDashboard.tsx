@@ -2,12 +2,12 @@
 
 import { ReactNode } from "react";
 
-interface CardProps {
+interface CardDashboardProps {
   title: string;
   data: { label: ReactNode; value: string | number }[];
 }
 
-const Card = ({ title, data }: CardProps) => {
+const CardDashboard = ({ title, data }: CardDashboardProps) => {
   return (
     <div className="bg-gradient-to-r from-[#add8f0] to-[#c0f8f8] m-3 border-[2px] border-[#a09c93] shadow-lg rounded-xl p-2">
       <div className="text-[20px] text-black flex justify-center">{title}</div>
@@ -22,4 +22,4 @@ const Card = ({ title, data }: CardProps) => {
   );
 };
 
-export default Card;
+export default CardDashboard;

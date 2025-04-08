@@ -33,6 +33,18 @@ const chartData = [
   { day: "10", pm1: 73, "pm2.5": 190, pm10: 186 },
   { day: "11", pm1: 209, "pm2.5": 130, pm10: 186 },
   { day: "12", pm1: 214, "pm2.5": 140, pm10: 186 },
+  { day: "13", pm1: 186, "pm2.5": 80, pm10: 186 },
+  { day: "14", pm1: 305, "pm2.5": 200, pm10: 186 },
+  { day: "15", pm1: 237, "pm2.5": 120, pm10: 186 },
+  { day: "16", pm1: 73, "pm2.5": 190, pm10: 186 },
+  { day: "17", pm1: 209, "pm2.5": 130, pm10: 186 },
+  { day: "18", pm1: 214, "pm2.5": 140, pm10: 186 },
+  { day: "19", pm1: 186, "pm2.5": 80, pm10: 186 },
+  { day: "20", pm1: 305, "pm2.5": 200, pm10: 186 },
+  { day: "21", pm1: 237, "pm2.5": 120, pm10: 186 },
+  { day: "22", pm1: 73, "pm2.5": 190, pm10: 186 },
+  { day: "23", pm1: 209, "pm2.5": 130, pm10: 186 },
+  { day: "24", pm1: 214, "pm2.5": 140, pm10: 186 },
 ];
 const chartConfig = {
   pm1: {
@@ -52,7 +64,7 @@ const chartConfig = {
 const StartLineChart = ({ dataKey, title, color }: StartLineChartProps) => {
   return (
     <div className="">
-      <Card className="bg-[#f7f7ed]">
+      <Card className="bg-white">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>Day logging</CardDescription>
