@@ -2,18 +2,42 @@ import { useGetDashboard } from "@/api/dashboard";
 import Card from "@/components/card";
 import Map from "@/components/map";
 
+type TimestampDisplayProps = {
+  unixTimestamp: string;
+};
 export default async function Dashboard() {
   const data = await useGetDashboard();
 
+  const unixTimestamp = data.timestamp;
+
+  const TimestampDisplay: React.FC<TimestampDisplayProps> = ({
+    unixTimestamp,
+  }) => {
+    const parsedTimestamp: number = parseInt(unixTimestamp, 10);
+    const date = new Date(parsedTimestamp * 1000);
+    const formatted: string = date.toLocaleString("en-GB");
+
+    return (
+      <div className="p-1">
+        <p className="font-semibold">Time: {formatted}</p>
+      </div>
+    );
+  };
+
   return (
     <div className="h-screen">
+      <div className="flex justify-end">
+        <div className="w-[230px] rounded-bl-lg bg-[#DEB841] mb-2 ">
+          <TimestampDisplay unixTimestamp={unixTimestamp} />
+        </div>
+      </div>
       <div className="grid lg:grid-cols-3">
         <div className="lg:col-span-2 ">
           {data.pointData?.map((item, idx) => (
             <Map key={`${item.title}-${idx}`} {...item} />
           ))}
         </div>
-        <div className="grid grid-cols-5 ml-2 mt-2 lg:absolute lg:-bottom-5 lg:left-0 lg:w-full">
+        <div className="grid grid-cols-5 ml-2  lg:absolute lg:-bottom-5 lg:left-0 lg:w-full">
           {[
             { label: "Very Good", color: "bg-[#3EE3E6]" },
             { label: "Good", color: "bg-[#42C266]" },

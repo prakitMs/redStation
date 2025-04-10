@@ -7,7 +7,7 @@ import SideNav from "@/components/side-nav";
 import StartTable from "@/components/tables";
 import { useState } from "react";
 
-export default function Dashboard() {
+export default function CarbonDioxide() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
   return (
@@ -30,13 +30,13 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="w-[45vw] m-3 border-4 border-black rounded-[12] ">
+          <div className="w-[50vw] m-3 border-4 border-black rounded-[12] ">
             <StartLineChart title=" Carbon Dioxide" dataKey="pm2.5" />
           </div>
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
-            <div className="m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
+            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
               <StartTable />
             </div>
           )}

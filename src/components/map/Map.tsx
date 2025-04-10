@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import MarkerLog from "../marker-log/MarkerLog";
+import { getColorByValue } from "../utils/iconCondition";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -17,9 +18,6 @@ const Marker = dynamic(
   () => import("react-leaflet").then((mod) => mod.Marker),
   { ssr: false }
 );
-const Popup = dynamic(() => import("react-leaflet").then((mod) => mod.Popup), {
-  ssr: false,
-});
 
 export interface MapProps {
   title: string;
@@ -47,21 +45,10 @@ const Map = ({ latitude, longitude, ...props }: MapProps) => {
   if (!leaflet) return <div>Loading map...</div>;
 
   const numberMarker = (pmValue: number) => {
-    const getColor = (value: number) => {
-      if (value <= 25) return "#3EE3E6"; // อากาศดีมาก
-      if (value <= 50) return "#42C266"; // อากาศดี
-      if (value <= 100) return "#EBE65D"; // ปานกลาง
-      if (value <= 150) return "#EC8739"; // มีผลต่อสุขภาพ
-      return "#F74848"; // อันตราย
-    };
-
-    const handleMarkerClick = () => {
-      setShowLog(true); // Show the MarkerLog when the marker is clicked
-    };
     return leaflet.divIcon({
       className: "rounded-full",
       html: `<div style="
-            background-color: ${getColor(pmValue)};
+            background-color: ${getColorByValue(pmValue)};
             color: black;
             font-weight: bold;
             display: flex;
@@ -83,7 +70,7 @@ const Map = ({ latitude, longitude, ...props }: MapProps) => {
     setShowLog(true); // Show the MarkerLog when the marker is clicked
   };
   return (
-    <div className="border-4 relative border-indigo-100 lg:h-[80vh] lg:max-w-[70vw] max-w-[95vw] h-[80vh] md:min-h-[70vh] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden mt-10 ml-5 mr-5 ">
+    <div className="border-4 relative border-indigo-100 lg:h-[80vh] lg:max-w-[70vw] max-w-[95vw] h-[80vh] md:min-h-[70vh] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden  ml-5 mr-5 ">
       <MapContainer center={position1} zoom={10} className="w-full h-full z-10">
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

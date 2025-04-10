@@ -1,7 +1,10 @@
 import CalendarButton from "@/components/calendar-button";
+import { CardMax, CardMin, CardAverrage } from "@/components/card";
 import StartLineChart from "@/components/chart/StartLineChart";
 
 import SideNav from "@/components/side-nav";
+
+
 
 export default function PaticulateMatter() {
   return (
@@ -13,18 +16,69 @@ export default function PaticulateMatter() {
           Paticulate Matter
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
-          <div className="grid m-5  border-4 border-black rounded-[12] ">
-            <StartLineChart title="PM2.5" dataKey="pm2.5" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 mt-4">
+          <div className="grid grid-cols-3">
+            <div className="ml-2 mr-2 ">
+              <CardMax unit="µg./m3" />
+            </div>
+            <div className="ml-2 mr-2">
+              <CardMin unit="µg./m3" />
+            </div>
+            <div className="ml-2 mr-2">
+              <CardAverrage unit="µg./m3" />
+            </div>
+            <div>
+              <div className="w-[55vw] lg:w-[33vw] m-5 border-4 border-black rounded-[12] ">
+                <StartLineChart title="PM 1.0" dataKey="pm1" />
+              </div>
+            </div>
           </div>
-          <div className="grid m-5  border-4 border-black rounded-[12] ">
-            <StartLineChart title="PM10" dataKey="pm10" />
+
+          <div className="grid grid-cols-3">
+            <div className="ml-2 mr-2">
+              <CardMax unit="µg./m3" />
+            </div>
+            <div className="ml-2 mr-2">
+              <CardMin unit="µg./m3" />
+            </div>
+            <div className="ml-2 mr-2">
+              <CardAverrage unit="µg./m3" />
+            </div>
+            <div className="w-[55vw]  lg:w-[33vw] m-5  border-4 border-black rounded-[12] ">
+              <StartLineChart title="PM 2.5" dataKey="pm2.5" />
+            </div>
           </div>
-          <div className="grid m-5  border-4 border-black rounded-[12] ">
-            <StartLineChart title="PM2.5" dataKey="pm2.5" />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2">
+          <div className="grid grid-cols-3">
+            <div className="ml-2 mr-2">
+              <CardMax unit="µg./m3" />
+            </div>
+            <div className="ml-2 mr-2">
+              <CardMin unit="µg./m3" />
+            </div>
+            <div className="ml-2 mr-2">
+              <CardAverrage unit="µg./m3" />
+            </div>
+            <div className="w-[55vw] lg:w-[33vw] m-5 border-4 border-black rounded-[12] ">
+              <StartLineChart title="PM 10" dataKey="pm10" />
+            </div>
           </div>
-          <div className="grid m-5  border-4 border-black rounded-[12] ">
-            <StartLineChart title="PM10" dataKey="pm10" />
+
+          <div className="grid grid-cols-3">
+            <div className="ml-2 mr-2">
+              <CardMax unit="µg./m3" />
+            </div>
+            <div className="ml-2 mr-2">
+              <CardMin unit="µg./m3" />
+            </div>
+            <div className="ml-2 mr-2">
+              <CardAverrage unit="µg./m3" />
+            </div>
+            <div className="w-[55vw] lg:w-[33vw] m-5  border-4 border-black rounded-[12] ">
+              <StartLineChart title="PM 100" dataKey="pm2.5" />
+            </div>
           </div>
         </div>
       </div>

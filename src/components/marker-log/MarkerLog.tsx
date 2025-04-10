@@ -1,6 +1,15 @@
 import React from "react";
 import { BsEmojiLaughing } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
+import { getIconByValue } from "../utils/iconCondition";
+import { COLOR } from "@/constant/markerColor";
+import { CiFaceFrown, CiFaceMeh, CiFaceSmile } from "react-icons/ci";
+import {
+  FaRegFaceDizzy,
+  FaRegFaceFrown,
+  FaRegFaceMeh,
+  FaRegFaceSmile,
+} from "react-icons/fa6";
 interface MarkerLogProps {
   "pm2.5": number;
   pm10: number;
@@ -9,6 +18,46 @@ interface MarkerLogProps {
   co2: number;
   onClose: () => void;
 }
+
+const renderIcon = (value: string) => {
+  switch (value) {
+    case "veryGood":
+      return (
+        <BsEmojiLaughing
+          className="w-[40px] h-[40px] md:w-[85px] md:h-[85px] md:mb-10 lg:w-[100px] lg:h-[100px] rounded-full"
+          style={{ background: COLOR.veryGood }}
+        />
+      );
+    case "good":
+      return (
+        <FaRegFaceSmile
+          className="w-[40px] h-[40px] md:w-[85px] md:h-[85px] md:mb-10 lg:w-[100px] lg:h-[100px] rounded-full"
+          style={{ background: COLOR.good }}
+        />
+      );
+    case "bad":
+      return (
+        <FaRegFaceMeh
+          className="w-[40px] h-[40px] md:w-[85px] md:h-[85px] md:mb-10 lg:w-[100px] lg:h-[100px] rounded-full"
+          style={{ background: COLOR.bad }}
+        />
+      );
+    case "veryBad":
+      return (
+        <FaRegFaceFrown
+          className="w-[40px] h-[40px] md:w-[85px] md:h-[85px] md:mb-10 lg:w-[100px] lg:h-[100px] rounded-full"
+          style={{ background: COLOR.veryBad }}
+        />
+      );
+    case "dangerous":
+      return (
+        <FaRegFaceDizzy
+          className="w-[40px] h-[40px] md:w-[85px] md:h-[85px] md:mb-10 lg:w-[100px] lg:h-[100px] rounded-full"
+          style={{ background: COLOR.dangerous }}
+        />
+      );
+  }
+};
 
 const MarkerLog: React.FC<MarkerLogProps> = ({
   "pm2.5": pm25,
@@ -20,7 +69,7 @@ const MarkerLog: React.FC<MarkerLogProps> = ({
 }) => {
   return (
     <div className="bg-white absolute inset-x-0 bottom-0 flex justify-between space-x-2 p-1 md:p-5  max-h-[130px] z-30 md:pl-10">
-      <BsEmojiLaughing className="w-[40px] h-[40px] md:w-[85px] md:h-[85px] md:mb-10 lg:w-[100px] lg:h-[100px] bg-green-500 rounded-full" />
+      <div>{renderIcon(getIconByValue(pm25))}</div>
       <div className="flex items-start">
         <div className="text-black text-sm lg:text-2xl md:text-xl ">
           PM2.5 <div>{pm25}</div>

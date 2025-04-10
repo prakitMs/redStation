@@ -96,17 +96,25 @@ const StartTable = () => {
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead>Date</TableHead>
             <TableHead>Time</TableHead>
             <TableHead>PM2.5</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody className="text-white">
-          {paginatedData.map((invoice) => (
-            <TableRow key={invoice.time}>
-              <TableCell className="font-medium">{invoice.time}</TableCell>
-              <TableCell className="font-medium">{invoice.pm2_5}</TableCell>
-            </TableRow>
-          ))}
+          {paginatedData.map((invoice) => {
+            const dateObj = new Date(invoice.time);
+            const date = dateObj.toLocaleDateString("en-GB");
+            const time = dateObj.toTimeString().slice(0, 5); // HH:mm
+
+            return (
+              <TableRow key={invoice.time}>
+                <TableCell className="font-medium">{date}</TableCell>
+                <TableCell className="font-medium">{time}</TableCell>
+                <TableCell className="font-medium">{invoice.pm2_5}</TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
 

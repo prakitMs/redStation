@@ -8,6 +8,9 @@ interface CalendarButtonProps {
   onChange?: (date: Date) => void;
 }
 
+const currentDate = new Date();
+console.log(currentDate);
+
 const CalendarButton = ({ onChange }: CalendarButtonProps) => {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
@@ -20,7 +23,8 @@ const CalendarButton = ({ onChange }: CalendarButtonProps) => {
     setDate(selectedDate);
     onChange?.(selectedDate);
     setIsCalendarVisible(false);
-    console.log("Date selected:", selectedDate);
+    const localDate = new Date(selectedDate);
+    const utcDateString = localDate.toISOString();
   };
 
   return (

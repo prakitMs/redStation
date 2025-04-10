@@ -1,4 +1,5 @@
 import CalendarButton from "@/components/calendar-button";
+import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
 import SideNav from "@/components/side-nav";
 
@@ -12,8 +13,20 @@ export default function Pressure() {
           Pressure
         </div>
 
+        <div className="grid grid-cols-3">
+          <div className="m-5">
+            <CardMax unit="hPa" />
+          </div>
+          <div className="m-5">
+            <CardMin unit="hPa" />
+          </div>
+          <div className="m-5">
+            <CardAverrage unit="hPa" />
+          </div>
+        </div>
+
         <div className="flex justify-center">
-          <div className="w-[40vw] m-5 border-4 border-black rounded-[12] ">
+          <div className="w-[50vw] m-5 border-4 border-black rounded-[12] ">
             <StartLineChart title="Pressure" dataKey="pm10" />
           </div>
         </div>
