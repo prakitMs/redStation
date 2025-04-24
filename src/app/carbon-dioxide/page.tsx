@@ -1,5 +1,6 @@
 "use client";
 
+import { useGetCarbonDioxide } from "@/api/carbon-dioxide";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
@@ -9,29 +10,55 @@ import { useState } from "react";
 
 export default function CarbonDioxide() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const { data, isLoading } = useGetCarbonDioxide();
+  console.log(data);
+
+  if (isLoading || !data) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+        <div className="loading">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen">
       <SideNav />
-
+      <title>Carbon Dioxide</title>
       <div className="flex-1 ">
-        <div className="text-xl text-black font-semibold bg-slate-200 w-40 p-1 rounded-b-md border-double border-black">
-          Carbon Dioxide
+        <div className="text-xl text-black font-semibold bg-slate-200 w-52 p-1 rounded-b-md border-double border-black">
+          Carbon Dioxide (CO<sub>2</sub>)
         </div>
         <div className="grid grid-cols-3">
           <div className="m-5">
-            <CardMax unit="ppm" />
+            <CardMax
+              data={data?.summary?.max.value as number}
+              unit="ppm"
+              time={data?.summary?.max.time as string}
+            />
           </div>
           <div className="m-5">
-            <CardMin unit="ppm" />
+            <CardMin
+              data={data?.summary?.min.value as number}
+              unit="ppm"
+              time={data?.summary?.min.time as string}
+            />
           </div>
           <div className="m-5">
-            <CardAverrage unit="ppm" />
+            <CardAverrage
+              data={data?.summary?.avg.value as number}
+              unit="ppm"
+            />
           </div>
         </div>
         <div className="flex justify-center">
           <div className="w-[50vw] m-3 border-4 border-black rounded-[12] ">
-            <StartLineChart title=" Carbon Dioxide" dataKey="pm2.5" />
+            <StartLineChart title=" Carbon Dioxide" data={data.formatData} />
           </div>
         </div>
         <div className="flex justify-center">

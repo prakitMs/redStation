@@ -18,5 +18,6 @@ export const PAGE_ROUTE = {
   rainfall: "rainfall",
 };
 export const API_ROUTE = {
-  dashboard: "/smartG/sensor",
+  dashboard: "/api/dashboard-query",
+  data: "/api/find-data",
 };

@@ -3,7 +3,6 @@ import { BsEmojiLaughing } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { getIconByValue } from "../utils/iconCondition";
 import { COLOR } from "@/constant/markerColor";
-import { CiFaceFrown, CiFaceMeh, CiFaceSmile } from "react-icons/ci";
 import {
   FaRegFaceDizzy,
   FaRegFaceFrown,
@@ -11,7 +10,7 @@ import {
   FaRegFaceSmile,
 } from "react-icons/fa6";
 interface MarkerLogProps {
-  "pm2.5": number;
+  pm25: number;
   pm10: number;
   pm100: number;
   o2: number;
@@ -60,7 +59,7 @@ const renderIcon = (value: string) => {
 };
 
 const MarkerLog: React.FC<MarkerLogProps> = ({
-  "pm2.5": pm25,
+  pm25,
   pm10,
   pm100,
   o2,

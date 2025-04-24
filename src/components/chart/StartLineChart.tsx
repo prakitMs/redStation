@@ -15,53 +15,53 @@ import {
 } from "@/components/ui/chart";
 
 interface StartLineChartProps {
-  dataKey: keyof typeof chartConfig;
   title?: string;
   color?: string;
+  data?: { time: string; value: number }[];
 }
+const RotatedTick = (props: any) => {
+  const { x, y, payload } = props;
+  return (
+    <text
+      x={x}
+      y={y}
+      dy={6}
+      textAnchor="start"
+      transform={`rotate(-45, ${x}, ${y})`}
+      className="text-[10px] fill-gray-700"
+    >
+      {payload.value}
+    </text>
+  );
+};
 
-const chartData = [
-  { day: "1", pm1: 186, "pm2.5": 80, pm10: 186 },
-  { day: "2", pm1: 305, "pm2.5": 200, pm10: 186 },
-  { day: "3", pm1: 237, "pm2.5": 120, pm10: 186 },
-  { day: "4", pm1: 73, "pm2.5": 190, pm10: 186 },
-  { day: "5", pm1: 209, "pm2.5": 130, pm10: 186 },
-  { day: "6", pm1: 214, "pm2.5": 140, pm10: 186 },
-  { day: "7", pm1: 186, "pm2.5": 80, pm10: 186 },
-  { day: "8", pm1: 305, "pm2.5": 200, pm10: 186 },
-  { day: "9", pm1: 237, "pm2.5": 120, pm10: 186 },
-  { day: "10", pm1: 73, "pm2.5": 190, pm10: 186 },
-  { day: "11", pm1: 209, "pm2.5": 130, pm10: 186 },
-  { day: "12", pm1: 214, "pm2.5": 140, pm10: 186 },
-  { day: "13", pm1: 186, "pm2.5": 80, pm10: 186 },
-  { day: "14", pm1: 305, "pm2.5": 200, pm10: 186 },
-  { day: "15", pm1: 237, "pm2.5": 120, pm10: 186 },
-  { day: "16", pm1: 73, "pm2.5": 190, pm10: 186 },
-  { day: "17", pm1: 209, "pm2.5": 130, pm10: 186 },
-  { day: "18", pm1: 214, "pm2.5": 140, pm10: 186 },
-  { day: "19", pm1: 186, "pm2.5": 80, pm10: 186 },
-  { day: "20", pm1: 305, "pm2.5": 200, pm10: 186 },
-  { day: "21", pm1: 237, "pm2.5": 120, pm10: 186 },
-  { day: "22", pm1: 73, "pm2.5": 190, pm10: 186 },
-  { day: "23", pm1: 209, "pm2.5": 130, pm10: 186 },
-  { day: "24", pm1: 214, "pm2.5": 140, pm10: 186 },
-];
+const CustomLabelList = (props: any) => {
+  const { x, y, index, value } = props;
+
+  // เช็คลำดับ index แล้วกำหนด dy (ระยะขึ้น/ลง)
+  const isEven = index % 2 === 0;
+
+  return (
+    <text
+      x={x}
+      y={y}
+      dy={isEven ? -15 : 15} // ค่าคี่ล่าง คู่บน
+      textAnchor="middle"
+      className="text-[10px] fill-gray-700"
+    >
+      {value}
+    </text>
+  );
+};
+
 const chartConfig = {
-  pm1: {
-    label: "pm1",
+  chart1: {
+    label: "chart1",
     color: "#C1121F",
-  },
-  "pm2.5": {
-    label: "pm2.5",
-    color: "#1D3461",
-  },
-  pm10: {
-    label: "pm10",
-    color: "#669BBC",
   },
 } satisfies ChartConfig;
 
-const StartLineChart = ({ dataKey, title, color }: StartLineChartProps) => {
+const StartLineChart = ({ title, color, data }: StartLineChartProps) => {
   return (
     <div className="">
       <Card className="bg-white">
@@ -73,33 +73,30 @@ const StartLineChart = ({ dataKey, title, color }: StartLineChartProps) => {
           <ChartContainer config={chartConfig}>
             <LineChart
               accessibilityLayer
-              data={chartData}
+              data={data}
               margin={{
                 top: 20,
-                left: 12,
-                right: 12,
+                left: 25,
+                right: 25,
               }}
             >
               <CartesianGrid vertical={false} />
               <XAxis
-                dataKey="day"
+                dataKey="time"
                 tickLine={false}
                 axisLine={false}
+                tick={<RotatedTick />}
                 tickMargin={8}
-                tickFormatter={(value) => value.slice(0, 3)}
+                interval={0}
               />
               <ChartTooltip
                 cursor={false}
                 content={<ChartTooltipContent indicator="line" />}
               />
               <Line
-                dataKey={dataKey}
+                dataKey="value"
                 type="natural"
-                stroke={
-                  color ??
-                  chartConfig?.[dataKey].color ??
-                  chartConfig?.["pm2.5"].color
-                }
+                stroke={color ?? chartConfig?.["chart1"].color}
                 strokeWidth={2}
                 dot={{
                   fill: "#ffffff",
@@ -108,12 +105,7 @@ const StartLineChart = ({ dataKey, title, color }: StartLineChartProps) => {
                   r: 6,
                 }}
               >
-                <LabelList
-                  position="top"
-                  offset={12}
-                  className="fill-foreground"
-                  fontSize={12}
-                />
+                <LabelList content={<CustomLabelList />} />
               </Line>
             </LineChart>
           </ChartContainer>

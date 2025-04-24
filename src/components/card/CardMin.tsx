@@ -1,13 +1,21 @@
 import React from "react";
 interface CardMinProps {
   unit: string;
+  time: string;
+  data?: number;
 }
-export const CardMin = ({ unit }: CardMinProps) => {
+export const CardMin = ({ unit, time, data }: CardMinProps) => {
+  const rawTimestamp = time;
+  const timeOnly = new Date(rawTimestamp).toTimeString().split(" ")[0];
+  const valueRounded = parseFloat(Number(data).toFixed(3));
+
   return (
     <div className=" min-w-[50px] h-[100px] bg-green-500 rounded-md text-white ">
-      <div className="p-2">ค่าสูงสุด</div>
-      <div className="flex justify-center  text-xl">10 {unit}</div>
-      <div className="pl-2">12:00 </div>
+      <div className="p-2">ค่าต่ำสุด</div>
+      <div className="flex justify-center  text-xl">
+        {valueRounded} {unit}
+      </div>
+      <div className="pl-2">{timeOnly}</div>
     </div>
   );
 };

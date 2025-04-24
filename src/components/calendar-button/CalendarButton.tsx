@@ -25,6 +25,7 @@ const CalendarButton = ({ onChange }: CalendarButtonProps) => {
     setIsCalendarVisible(false);
     const localDate = new Date(selectedDate);
     const utcDateString = localDate.toISOString();
+    console.log(utcDateString);
   };
 
   return (

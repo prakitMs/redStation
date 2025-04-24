@@ -1,14 +1,22 @@
 import React from "react";
 
 interface CardMaxprops {
+  data?: number;
   unit: string;
+  time: string;
 }
-export const CardMax = ({ unit }: CardMaxprops) => {
+
+export const CardMax = ({ data, unit, time }: CardMaxprops) => {
+  const rawTimestamp = time;
+  const timeOnly = new Date(rawTimestamp).toTimeString().split(" ")[0];
+  const valueRounded = parseFloat(Number(data).toFixed(3));
   return (
     <div className=" min-w-[50px] h-[100px] bg-red-500 rounded-md text-white ">
       <div className="p-2">ค่าสูงสุด</div>
-      <div className="flex justify-center  text-xl">100 {unit}</div>
-      <div className="pl-2">12:00 </div>
+      <div className="flex justify-center  text-xl">
+        {valueRounded} {unit}
+      </div>
+      <div className="pl-2">{timeOnly} </div>
     </div>
   );
 };

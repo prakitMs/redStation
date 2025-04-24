@@ -1,11 +1,22 @@
-import { API_ROUTE } from "@/constant/routes";
-import { api } from "../components/utils/api";
-import camelcaseKeys from "camelcase-keys";
-import { plainToInstance } from "class-transformer";
-import { Dashboard } from "@/adaptors/dashboard/Dashbosrd";
+"use client";
 
-export const useGetDashboard = async () => {
-  const resp: Record<string, any> = await api.get(API_ROUTE.dashboard);
-  const formatResp = camelcaseKeys(resp.data, { deep: true });
-  return plainToInstance(Dashboard, formatResp);
-};
+import { Dashboard } from "@/adaptors/dashboard/Dashboard";
+import { API_ROUTE } from "@/constant/routes";
+import { useQuery } from "@tanstack/react-query";
+import { plainToInstance } from "class-transformer";
+
+export function useGetDashboard() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["dashboard"],
+    queryFn: async () => {
+      const fetchData = await fetch(API_ROUTE.dashboard);
+      return await fetchData.json();
+    },
+    // refetchInterval: 20000,
+    // refetchIntervalInBackground: false,
+    retry: false,
+  });
+
+  const transformedData = plainToInstance(Dashboard, { data: data });
+  return { data: transformedData, isLoading };
+}

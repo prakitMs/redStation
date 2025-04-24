@@ -1,10 +1,9 @@
 export interface IDashboard {
-timestamp: string
-airQuality: IAirQuality 
-environment: IEnvironment
-gas: IGas
-weather: IWeather
-
+  timestamp: string;
+  airQuality: IAirQuality;
+  environment: IEnvironment;
+  gas: IGas;
+  weather: IWeather;
 }
 export interface IAirQuality {
   co2: number;
@@ -13,7 +12,6 @@ export interface IAirQuality {
   pm10: number;
   pm25: number;
   pm100: number;
-  sound: number;
 }
 
 export interface IEnvironment {
@@ -22,6 +20,7 @@ export interface IEnvironment {
   pressure: number;
   temperature: number;
   uv: number;
+  sound: number;
 }
 
 export interface IGas {

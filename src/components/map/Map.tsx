@@ -20,10 +20,9 @@ const Marker = dynamic(
 );
 
 export interface MapProps {
-  title: string;
   latitude: number;
   longitude: number;
-  "pm2.5": number;
+  pm25: number;
   pm10: number;
   pm100: number;
   o2: number;
@@ -78,7 +77,7 @@ const Map = ({ latitude, longitude, ...props }: MapProps) => {
         />
         <Marker
           position={position1}
-          icon={numberMarker(props["pm2.5"])}
+          icon={numberMarker(props["pm25"])}
           eventHandlers={{
             click: handleMarkerClick, // Trigger the function on click
           }}

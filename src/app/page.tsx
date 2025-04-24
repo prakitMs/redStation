@@ -1,41 +1,38 @@
+"use client";
+
 import { useGetDashboard } from "@/api/dashboard";
-import Card from "@/components/card";
+import { CardDashboard } from "@/components/card";
+
 import Map from "@/components/map";
+import { formatDateToThai } from "@/components/utils/format";
 
-type TimestampDisplayProps = {
-  unixTimestamp: string;
-};
-export default async function Dashboard() {
-  const data = await useGetDashboard();
+export default function Dashboard() {
+  const { data } = useGetDashboard();
+  console.log({ data });
 
-  const unixTimestamp = data.timestamp;
-
-  const TimestampDisplay: React.FC<TimestampDisplayProps> = ({
-    unixTimestamp,
-  }) => {
-    const parsedTimestamp: number = parseInt(unixTimestamp, 10);
-    const date = new Date(parsedTimestamp * 1000);
-    const formatted: string = date.toLocaleString("en-GB");
-
+  if (!data) {
     return (
-      <div className="p-1">
-        <p className="font-semibold">Time: {formatted}</p>
+      <div className="fixed inset-0 bg-black/25 h-screen pt-[20vh]">
+        <div className="loading mx-auto ">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
     );
-  };
+  }
 
   return (
     <div className="h-screen">
       <div className="flex justify-end">
-        <div className="w-[230px] rounded-bl-lg bg-[#DEB841] mb-2 ">
-          <TimestampDisplay unixTimestamp={unixTimestamp} />
+        <div className="w-48 rounded-bl-lg bg-[#DEB841] mb-2 p-2 font-bold">
+          {formatDateToThai(data.data?.[0].time)}
         </div>
       </div>
       <div className="grid lg:grid-cols-3">
         <div className="lg:col-span-2 ">
-          {data.pointData?.map((item, idx) => (
-            <Map key={`${item.title}-${idx}`} {...item} />
-          ))}
+          <Map {...data.mapData} />
         </div>
         <div className="grid grid-cols-5 ml-2  lg:absolute lg:-bottom-5 lg:left-0 lg:w-full">
           {[
@@ -54,9 +51,10 @@ export default async function Dashboard() {
           ))}
         </div>
         <div className="grid md:grid-cols-2 mt-5 md:mt-5 italic  font-bold">
-          {data.dashboardData?.map((item, idx) => (
-            <Card key={`${item.title}-${idx}`} {...item} />
-          ))}
+          <CardDashboard {...data.airQuantity} />
+          <CardDashboard {...data.environment} />
+          <CardDashboard {...data.gas} />
+          <CardDashboard {...data.weather} />
         </div>
       </div>
     </div>

@@ -1,10 +1,28 @@
+"use client";
+import useGetWindSpeed from "@/api/wind-speed";
 import CalendarButton from "@/components/calendar-button";
 import { CardMax, CardAverrage, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
 import SideNav from "@/components/side-nav";
 import StartTable from "@/components/tables";
+import { useState } from "react";
 
 export default function WindSpeed() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const { data, isLoading } = useGetWindSpeed();
+
+  if (isLoading || !data) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+        <div className="loading">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="flex h-screen">
       <SideNav />
@@ -16,28 +34,45 @@ export default function WindSpeed() {
 
         <div className="grid grid-cols-3">
           <div className="m-5">
-            <CardMax unit="km/h" />
+            <CardMax
+              data={data?.summary?.max.value as number}
+              unit="km/h"
+              time={data?.summary?.max.time as string}
+            />
           </div>
           <div className="m-5">
-            <CardMin unit="km/h" />
+            <CardMin
+              data={data?.summary?.min.value as number}
+              unit="km/h"
+              time={data?.summary?.min.time as string}
+            />
           </div>
           <div className="m-5">
-            <CardAverrage unit="km/h" />
+            <CardAverrage
+              data={data?.summary?.avg.value as number}
+              unit="km/h"
+            />
           </div>
         </div>
 
         <div className="flex justify-center">
           <div className="w-[50vw] m-2 border-4 border-black rounded-[12]">
-            <StartLineChart title="Wind Speed" dataKey="pm1" />
+            <StartLineChart
+              title="Wind Direction"
+              data={data?.formatData}
+              color="#ff006e"
+            />
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
-            <StartTable />
-          </div>
+          {!!selectedDate && (
+            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
+              <StartTable />
+            </div>
+          )}
         </div>
       </div>
-      <CalendarButton />
+      <CalendarButton onChange={(date) => setSelectedDate(date)} />
     </div>
   );
 }
