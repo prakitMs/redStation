@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-interface TableProps {
+interface TablePMProps {
   title: string;
   unit: string;
   data?: { time: string; value: number }[];
@@ -17,7 +17,7 @@ interface TableProps {
 
 const rowsPerPage = 20;
 
-export const StartTable = ({ data, title, unit }: TableProps) => {
+export const TablePM = ({ data, title, unit }: TablePMProps) => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const pageCount = Math.ceil((data?.length || 0) / rowsPerPage);

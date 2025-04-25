@@ -1,17 +1,20 @@
 "use client";
 
 import { useGetCarbonDioxide } from "@/api/carbon-dioxide";
+import { useGetDataTable } from "@/api/get-data-table";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
 import SideNav from "@/components/side-nav";
-import StartTable from "@/components/tables";
+import { StartTable } from "@/components/tables";
 import { useState } from "react";
 
 export default function CarbonDioxide() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const { data, isLoading } = useGetCarbonDioxide();
-  console.log(data);
+  const { dataTable } = useGetDataTable("CO2", selectedDate);
+  const unit = "ppm";
+  const title = "CarBon Dioxide";
 
   if (isLoading || !data) {
     return (
@@ -29,7 +32,6 @@ export default function CarbonDioxide() {
   return (
     <div className="flex h-screen">
       <SideNav />
-      <title>Carbon Dioxide</title>
       <div className="flex-1 ">
         <div className="text-xl text-black font-semibold bg-slate-200 w-52 p-1 rounded-b-md border-double border-black">
           Carbon Dioxide (CO<sub>2</sub>)
@@ -38,33 +40,37 @@ export default function CarbonDioxide() {
           <div className="m-5">
             <CardMax
               data={data?.summary?.max.value as number}
-              unit="ppm"
+              unit={unit}
               time={data?.summary?.max.time as string}
             />
           </div>
           <div className="m-5">
             <CardMin
               data={data?.summary?.min.value as number}
-              unit="ppm"
+              unit={unit}
               time={data?.summary?.min.time as string}
             />
           </div>
           <div className="m-5">
             <CardAverrage
               data={data?.summary?.avg.value as number}
-              unit="ppm"
+              unit={unit}
             />
           </div>
         </div>
         <div className="flex justify-center">
           <div className="w-[50vw] m-3 border-4 border-black rounded-[12] ">
-            <StartLineChart title=" Carbon Dioxide" data={data.formatData} />
+            <StartLineChart title={title} data={data.formatData} />
           </div>
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
             <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
-              <StartTable />
+              <StartTable
+                data={dataTable.dataTableFetch}
+                title={title}
+                unit={unit}
+              />
             </div>
           )}
         </div>

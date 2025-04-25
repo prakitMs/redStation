@@ -8,7 +8,20 @@ import SideNav from "@/components/side-nav";
 
 export default function PaticulateMatter() {
   const { data, isLoading } = useGetPM();
-  console.log(data);
+
+  if (isLoading || !data) {
+    return (
+      <div className="fixed inset-0 bg-gray-200/25 h-screen pt-[20vh]">
+        <div className="loading mx-auto ">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen">
       <SideNav />

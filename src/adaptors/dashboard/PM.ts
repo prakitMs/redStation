@@ -1,4 +1,4 @@
-import { IDataItems, RawDataItem } from "@/interface/test";
+import { IDataItems, RawDataItem } from "@/interface/data";
 import { Expose } from "class-transformer";
 import { formatDateToThaiHour } from "@/components/utils/format";
 

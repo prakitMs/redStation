@@ -8,11 +8,10 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { type = "Altitude" } = req.query;
+  const { type = "Altitude", date } = req.query;
   const queryApi = influxDB.getQueryApi(org);
   const dateNow = new Date();
   const { startDate, endDate } = filterDate(dateNow) ?? {};
-  console.log({ startDate, endDate });
 
   const fluxQuery = `
    
@@ -25,19 +24,19 @@ export default async function handler(
 
 
       from(bucket: "${bucket}")
-        |> range(start: -1d)
+        |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
         |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
         |> max()
         |> yield(name: "max")
 
       from(bucket: "${bucket}")
-        |> range(start: -1d)
+        |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
         |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
         |> min()
         |> yield(name: "min")
 
       from(bucket: "${bucket}")
-        |> range(start: -1d)
+        |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
         |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
         |> mean()
         |> yield(name: "avg")

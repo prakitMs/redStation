@@ -1,17 +1,20 @@
 "use client";
+import { useGetDataTable } from "@/api/get-data-table";
 import useGetNitrogenDioxide from "@/api/nitrogen-dioxide";
 import CalendarButton from "@/components/calendar-button";
 import { CardMax, CardAverrage, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
 import SideNav from "@/components/side-nav";
-import StartTable from "@/components/tables";
+import { StartTable } from "@/components/tables";
+
 import { useState } from "react";
 
 export default function NitrogenDioxide() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const { dataTable } = useGetDataTable("NO2", selectedDate);
   const { data, isLoading } = useGetNitrogenDioxide();
-  console.log(data);
-
+  const unit = "ppm";
+  console.log(dataTable);
   if (isLoading || !data) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
@@ -37,21 +40,21 @@ export default function NitrogenDioxide() {
           <div className="m-5">
             <CardMax
               data={data?.summary?.max.value as number}
-              unit="ppm"
+              unit={unit}
               time={data?.summary?.max.time as string}
             />
           </div>
           <div className="m-5">
             <CardMin
               data={data?.summary?.min.value as number}
-              unit="ppm"
+              unit={unit}
               time={data?.summary?.min.time as string}
             />
           </div>
           <div className="m-5">
             <CardAverrage
               data={data?.summary?.avg.value as number}
-              unit="ppm"
+              unit={unit}
             />
           </div>
         </div>
@@ -63,7 +66,11 @@ export default function NitrogenDioxide() {
         <div className="flex justify-center">
           {!!selectedDate && (
             <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
-              <StartTable />
+              <StartTable
+                data={dataTable.dataTableFetch}
+                title="NO2"
+                unit={unit}
+              />
             </div>
           )}
         </div>

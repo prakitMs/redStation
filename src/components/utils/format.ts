@@ -27,3 +27,16 @@ export function formatDateToThaiHour(date: string | Date | undefined) {
   if (!date) return "-";
   return dayjs(date).tz("Asia/Bangkok").format("HH:mm");
 }
+
+export function plus24Hours(date: string | Date | undefined) {
+  if (!date) return {};
+  const dateSelect = dayjs(date).tz("UTC");
+  const startDate = dayjs(dateSelect)
+    .subtract(24, "hour")
+    .format("YYYY-MM-DDT17:00:00Z");
+  const stopDate = dayjs(dateSelect).format("YYYY-MM-DDT17:00:00Z");
+  return {
+    startDate: startDate,
+    endDate: stopDate,
+  };
+}

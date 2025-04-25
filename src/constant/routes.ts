@@ -20,4 +20,5 @@ export const PAGE_ROUTE = {
 export const API_ROUTE = {
   dashboard: "/api/dashboard-query",
   data: "/api/find-data",
+  table: "/api/query-data-table",
 };

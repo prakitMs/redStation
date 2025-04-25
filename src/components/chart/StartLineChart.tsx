@@ -57,7 +57,7 @@ const CustomLabelList = (props: any) => {
 const chartConfig = {
   chart1: {
     label: "chart1",
-    color: "#C1121F",
+    color: "#1b263b",
   },
 } satisfies ChartConfig;
 

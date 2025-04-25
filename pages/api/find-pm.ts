@@ -12,7 +12,6 @@ export default async function handler(
   const queryApi = influxDB.getQueryApi(org);
   const dateNow = new Date();
   const { startDate, endDate } = filterDate(dateNow) ?? {};
-  // console.log({ startDate, endDate });
 
   const fluxQuery = `
    
@@ -25,19 +24,19 @@ export default async function handler(
 
 
       from(bucket: "${bucket}")
-        |> range(start: -1d)
+      |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
         |> filter(fn: (r) => r["_field"] == "PM1" or r["_field"] == "PM10" or r["_field"] == "PM100" or r["_field"] == "PM25")
         |> max()
         |> yield(name: "max")
 
       from(bucket: "${bucket}")
-        |> range(start: -1d)
+      |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
         |> filter(fn: (r) => r["_field"] == "PM1" or r["_field"] == "PM10" or r["_field"] == "PM100" or r["_field"] == "PM25")
         |> min()
         |> yield(name: "min")
 
       from(bucket: "${bucket}")
-        |> range(start: -1d)
+      |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
         |> filter(fn: (r) => r["_field"] == "PM1" or r["_field"] == "PM10" or r["_field"] == "PM100" or r["_field"] == "PM25")
         |> mean()
         |> yield(name: "avg")

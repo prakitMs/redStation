@@ -1,20 +1,24 @@
 "use client";
 
+import { useGetDataTable } from "@/api/get-data-table";
 import { useGetOxygen } from "@/api/oxygen";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
 import SideNav from "@/components/side-nav";
-import StartTable from "@/components/tables";
+import { StartTable } from "@/components/tables";
 import { useState } from "react";
 
 export default function Oxygen() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const data = useGetOxygen();
+  const { data, isLoading } = useGetOxygen();
+  const { dataTable } = useGetDataTable("O2", selectedDate);
+  const unit = "ppm";
+  const title = "Oxygen";
 
-  if (!data) {
+  if (isLoading || !data) {
     return (
-      <div className="fixed inset-0 bg-black/25 h-screen pt-[20vh]">
+      <div className="fixed inset-0 bg-gray-200/25 h-screen pt-[20vh]">
         <div className="loading mx-auto ">
           <div></div>
           <div></div>
@@ -37,34 +41,38 @@ export default function Oxygen() {
           <div className="m-2 lg:m-5">
             <CardMax
               data={data?.summary?.max.value as number}
-              unit="ppm"
+              unit={unit}
               time={data?.summary?.max.time as string}
             />
           </div>
           <div className="m-2 lg:m-5">
             <CardMin
               data={data?.summary?.min.value as number}
-              unit="ppm"
+              unit={unit}
               time={data?.summary?.min.time as string}
             />
           </div>
           <div className="m-2 lg:m-5">
             <CardAverrage
               data={data?.summary?.avg.value as number}
-              unit="ppm"
+              unit={unit}
             />
           </div>
         </div>
 
         <div className="flex justify-center">
           <div className="w-[50vw] m-2  border-4 border-black rounded-[12] ">
-            <StartLineChart title="Oxygen" data={data?.formatData} />
+            <StartLineChart title={title} data={data?.formatData} />
           </div>
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
             <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
-              <StartTable />
+              <StartTable
+                data={dataTable.dataTableFetch}
+                title={title}
+                unit={unit}
+              />
             </div>
           )}
         </div>

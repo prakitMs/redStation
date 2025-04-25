@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import React from "react";
 interface CardAverrageProps {
   unit: string;

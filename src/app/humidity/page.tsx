@@ -1,18 +1,33 @@
 "use client";
+import { useGetDataTable } from "@/api/get-data-table";
 import useGetHumidity from "@/api/humidity";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart, { TestChart } from "@/components/chart";
 import SideNav from "@/components/side-nav";
-import StartTable from "@/components/tables";
-import { filterDate, formatDate } from "@/components/utils/format";
+import { StartTable } from "@/components/tables";
 import { useState } from "react";
 
 export default function Humidity() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const data = useGetHumidity();
-  const dateNow = new Date();
-  console.log(filterDate(dateNow));
+  const { data, isLoading } = useGetHumidity();
+  const { dataTable } = useGetDataTable("CO2", selectedDate);
+  const unit = "ppm";
+  const title = "Humidity";
+
+  if (isLoading || !data) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+        <div className="loading">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen">
       <SideNav />
@@ -47,17 +62,17 @@ export default function Humidity() {
 
         <div className="flex justify-center">
           <div className="w-[50vw] m-2 border-4 border-black rounded-[12] ">
-            <StartLineChart
-              title=" Humidity"
-              data={data?.formatData}
-              color="#D68FD6"
-            />
+            <StartLineChart title={title} data={data?.formatData} />
           </div>
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
             <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
-              <StartTable />
+              <StartTable
+                data={dataTable.dataTableFetch}
+                title={title}
+                unit={unit}
+              />
             </div>
           )}
         </div>

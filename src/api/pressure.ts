@@ -4,13 +4,19 @@ import { useQuery } from "@tanstack/react-query";
 import { plainToInstance } from "class-transformer";
 
 export default function useGetPressure() {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["preseure"],
     queryFn: async () => {
       const fetchData = await fetch("api/find-data?type=Pressure");
       return await fetchData.json();
     },
+    refetchInterval: 12000,
     retry: false,
   });
-  return plainToInstance(Data, { data: data });
+  const transformedData = plainToInstance(Data, { data: data });
+
+  return {
+    data: transformedData,
+    isLoading,
+  };
 }

@@ -2,24 +2,26 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { influxDB, org, bucket } from "@/lib/influx";
 import camelcaseKeys from "camelcase-keys";
+import { plus24Hours } from "@/components/utils/format";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { type = "Altitude" } = req.query;
+  const { type = "Altitude", date } = req.query;
   const queryApi = influxDB.getQueryApi(org);
 
-  console.log({ type });
+  const selectedDate = date;
+  const formatDate = plus24Hours(selectedDate as string);
+  console.log(formatDate.endDate, formatDate.startDate);
 
   const fluxQuery = `
-    from(bucket: "${bucket}")
-  |> range(start: -1h) // หรือ -30d, หรือ timestamp ก็ได้
-  |> filter(fn: (r) => r["_measurement"] == "RedStation")
-  |> filter(fn: (r) => r["_field"] == "${type}")
-  |> sort(columns: ["_time"], desc: true)
-  |> limit(n: 1)
-
+  from(bucket: "${bucket}")
+        |> range(start: time(v: "${formatDate.startDate}"), stop: time(v: "${formatDate.endDate}"))
+        |> filter(fn: (r) => r["_measurement"] == "RedStation")
+        |> filter(fn: (r) => r["_field"] == "${type}")
+        |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
+        |> yield(name: "hourly_mean")
   `;
 
   const results: any[] = [];

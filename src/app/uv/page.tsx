@@ -1,15 +1,34 @@
 "use client";
 
+import { useGetDataTable } from "@/api/get-data-table";
 import useGetUV from "@/api/uv";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
 import SideNav from "@/components/side-nav";
+import { StartTable } from "@/components/tables";
 import { useState } from "react";
 
 export default function Ultraviolet() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const data = useGetUV();
+  const { data, isLoading } = useGetUV();
+  const { dataTable } = useGetDataTable("UV", selectedDate);
+
+  const unit = "index UV";
+  const title = "Ultraviolet";
+
+  if (isLoading || !data) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
+        <div className="loading">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="flex h-screen">
       <SideNav />
@@ -18,35 +37,48 @@ export default function Ultraviolet() {
         <div className="text-xl text-black font-semibold bg-slate-200 w-40 p-1 rounded-b-md">
           Ultraviolet(UV)
         </div>
+
         <div className="grid grid-cols-3">
           <div className="m-5">
             <CardMax
               data={data?.summary?.max.value as number}
-              unit="UV index"
+              unit={unit}
               time={data?.summary?.max.time as string}
             />
           </div>
           <div className="m-5">
             <CardMin
               data={data?.summary?.min.value as number}
-              unit="UV index"
+              unit={unit}
               time={data?.summary?.min.time as string}
             />
           </div>
           <div className="m-5">
             <CardAverrage
               data={data?.summary?.avg.value as number}
-              unit="UV index"
+              unit={unit}
             />
           </div>
         </div>
+
         <div className="flex justify-center">
           <div className="w-[50vw] m-2 border-4 border-black rounded-[12] ">
-            <StartLineChart title="Ultraviolet" data={data?.formatData} />
+            <StartLineChart title={title} data={data?.formatData} />
           </div>
         </div>
+        <div className="flex justify-center">
+          {!!selectedDate && (
+            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
+              <StartTable
+                data={dataTable.dataTableFetch}
+                title={title}
+                unit={unit}
+              />
+            </div>
+          )}
+        </div>
       </div>
-      <CalendarButton />
+      <CalendarButton onChange={(date) => setSelectedDate(date)} />
     </div>
   );
 }
