@@ -12,7 +12,7 @@ export function useGetDashboard() {
       const fetchData = await fetch(API_ROUTE.dashboard);
       return await fetchData.json();
     },
-    refetchInterval: 20000,
+    refetchInterval: 300000,
     refetchIntervalInBackground: false,
     retry: false,
   });
