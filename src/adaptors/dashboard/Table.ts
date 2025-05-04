@@ -22,7 +22,7 @@ export class Table implements IDataItems {
   get dataTableFetch() {
     return this.data?.reduce<{ time: string; value: number }[]>(
       (resultMap, { result, value, time }) => {
-        if (result !== "hourly_mean") return resultMap;
+        if (result !== "minute_mean") return resultMap;
         return [
           ...resultMap,
           { time: formatDateToThai(time), value: Number(value.toFixed(2)) },

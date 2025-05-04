@@ -40,3 +40,6 @@ export function plus24Hours(date: string | Date | undefined) {
     endDate: stopDate,
   };
 }
+export function getDateOnly(date: string | Date | undefined) {
+  return dayjs(date).format("DD-MM-YYYY");
+}

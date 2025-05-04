@@ -1,9 +1,9 @@
 "use client";
-import { useGetDataTable } from "@/api/get-data-table";
-import useGetNitrogenDioxide from "@/api/nitrogen-dioxide";
+import { useGetDefaultData } from "@/api/get-data-graph";
 import CalendarButton from "@/components/calendar-button";
 import { CardMax, CardAverrage, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
+import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
 import { StartTable } from "@/components/tables";
 
@@ -11,10 +11,15 @@ import { useState } from "react";
 
 export default function NitrogenDioxide() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const { dataTable } = useGetDataTable("NO2", selectedDate);
-  const { data, isLoading } = useGetNitrogenDioxide();
+  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const { data, isLoading } = useGetDefaultData({
+    date: selectedDate,
+    type: "NO2",
+    timeSelect: selectedTimeInterval,
+  });
+
   const unit = "ppm";
-  console.log(dataTable);
+  const title = "Nitrogen Dioxide";
   if (isLoading || !data) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
@@ -60,15 +65,16 @@ export default function NitrogenDioxide() {
         </div>
         <div className="flex justify-center">
           <div className="w-[50vw] m-3 border-4 border-black rounded-[12] ">
-            <StartLineChart title=" Carbon Dioxide" data={data?.formatData} />
+            <StartLineChart title={title} data={data?.formatData} />
           </div>
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
-            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
+            <div>
               <StartTable
-                data={dataTable.dataTableFetch}
-                title="NO2"
+                date={selectedDate}
+                data={data.formatData}
+                title={title}
                 unit={unit}
               />
             </div>
@@ -76,6 +82,9 @@ export default function NitrogenDioxide() {
         </div>
       </div>
       <CalendarButton onChange={(date) => setSelectedDate(date)} />
+      <TimeIntervalSelection
+        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
+      />
     </div>
   );
 }

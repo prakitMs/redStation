@@ -1,20 +1,24 @@
 "use client";
 
-import { useGetCarbonDioxide } from "@/api/carbon-dioxide";
-import { useGetDataTable } from "@/api/get-data-table";
+import { useGetDefaultData } from "@/api/get-data-graph";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
+import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
 import { StartTable } from "@/components/tables";
 import { useState } from "react";
 
 export default function CarbonDioxide() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const { data, isLoading } = useGetCarbonDioxide();
-  const { dataTable } = useGetDataTable("CO2", selectedDate);
+  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const { data, isLoading } = useGetDefaultData({
+    date: selectedDate,
+    type: "CO2",
+    timeSelect: selectedTimeInterval,
+  });
   const unit = "ppm";
-  const title = "CarBon Dioxide";
+  const title = "Carbon Dioxide";
 
   if (isLoading || !data) {
     return (
@@ -59,15 +63,16 @@ export default function CarbonDioxide() {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="w-[50vw] m-3 border-4 border-black rounded-[12] ">
+          <div className="m-3 border-4 border-black rounded-[12] ">
             <StartLineChart title={title} data={data.formatData} />
           </div>
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
-            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
+            <div>
               <StartTable
-                data={dataTable.dataTableFetch}
+                date={selectedDate}
+                data={data.formatData}
                 title={title}
                 unit={unit}
               />
@@ -76,6 +81,9 @@ export default function CarbonDioxide() {
         </div>
       </div>
       <CalendarButton onChange={(date) => setSelectedDate(date)} />
+      <TimeIntervalSelection
+        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
+      />
     </div>
   );
 }

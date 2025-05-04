@@ -4,12 +4,21 @@ import CalendarButton from "@/components/calendar-button";
 import { CardMax, CardAverrage, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
 import SideNav from "@/components/side-nav";
-import useGetSulfurDioxide from "@/api/sulfur-dioxide";
-import StartTable from "@/components/tables";
+
+import { useGetDefaultData } from "@/api/get-data-graph";
+import { TimeIntervalSelection } from "@/components/selector";
+import { StartTable } from "@/components/tables";
 
 export default function SulferDioxide() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const { data, isLoading } = useGetSulfurDioxide();
+  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const { data, isLoading } = useGetDefaultData({
+    date: selectedDate,
+    type: "SO2",
+    timeSelect: selectedTimeInterval,
+  });
+  const unit = "db";
+  const title = "Sound Level";
 
   if (isLoading || !data) {
     return (
@@ -35,21 +44,21 @@ export default function SulferDioxide() {
           <div className="m-5">
             <CardMax
               data={data?.summary?.max.value as number}
-              unit="ppm"
+              unit={unit}
               time={data?.summary?.max.time as string}
             />
           </div>
           <div className="m-5">
             <CardMin
               data={data?.summary?.min.value as number}
-              unit="ppm"
+              unit={unit}
               time={data?.summary?.min.time as string}
             />
           </div>
           <div className="m-5">
             <CardAverrage
               data={data?.summary?.avg.value as number}
-              unit="ppm"
+              unit={unit}
             />
           </div>
         </div>
@@ -61,13 +70,21 @@ export default function SulferDioxide() {
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
-            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
-              <StartTable />
+            <div>
+              <StartTable
+                date={selectedDate}
+                data={data.formatData}
+                title={title}
+                unit={unit}
+              />
             </div>
           )}
         </div>
       </div>
       <CalendarButton onChange={(date) => setSelectedDate(date)} />
+      <TimeIntervalSelection
+        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
+      />
     </div>
   );
 }

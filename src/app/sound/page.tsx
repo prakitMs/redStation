@@ -1,18 +1,21 @@
 "use client";
-import { useGetDataTable } from "@/api/get-data-table";
-import useGetSound from "@/api/sound";
+import { useGetDefaultData } from "@/api/get-data-graph";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
+import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
 import { StartTable } from "@/components/tables";
 import { useState } from "react";
 
 export default function Sound() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const { data, isLoading } = useGetSound();
-  const { dataTable } = useGetDataTable("SOUND", selectedDate);
-
+  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const { data, isLoading } = useGetDefaultData({
+    date: selectedDate,
+    type: "SOUND",
+    timeSelect: selectedTimeInterval,
+  });
   const unit = "db";
   const title = "Sound Level";
 
@@ -65,9 +68,10 @@ export default function Sound() {
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
-            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
+            <div>
               <StartTable
-                data={dataTable.dataTableFetch}
+                date={selectedDate}
+                data={data.formatData}
                 title={title}
                 unit={unit}
               />
@@ -76,6 +80,9 @@ export default function Sound() {
         </div>
       </div>
       <CalendarButton onChange={(date) => setSelectedDate(date)} />
+      <TimeIntervalSelection
+        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
+      />
     </div>
   );
 }

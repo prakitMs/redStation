@@ -1,15 +1,23 @@
 "use client";
-import useGetWindDirect from "@/api/wind-direct";
+import { useGetDefaultData } from "@/api/get-data-graph";
 import CalendarButton from "@/components/calendar-button";
 import { CardMax, CardAverrage, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
+import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
-import StartTable from "@/components/tables";
+import { StartTable } from "@/components/tables";
 import { useState } from "react";
 
 export default function WindDirect() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const { data, isLoading } = useGetWindDirect();
+  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const { data, isLoading } = useGetDefaultData({
+    date: selectedDate,
+    type: "DIRECT",
+    timeSelect: selectedTimeInterval,
+  });
+  const unit = " W/m²";
+  const title = "Wind Direction";
 
   if (isLoading || !data) {
     return (
@@ -35,43 +43,47 @@ export default function WindDirect() {
           <div className="m-5">
             <CardMax
               data={data?.summary?.max.value as number}
-              unit="W/m²"
+              unit={unit}
               time={data?.summary?.max.time as string}
             />
           </div>
           <div className="m-5">
             <CardMin
               data={data?.summary?.min.value as number}
-              unit="W/m²"
+              unit={unit}
               time={data?.summary?.min.time as string}
             />
           </div>
           <div className="m-5">
             <CardAverrage
               data={data?.summary?.avg.value as number}
-              unit="W/m²"
+              unit={unit}
             />
           </div>
         </div>
 
         <div className="flex justify-center">
           <div className="w-[50vw] m-2 border-4 border-black rounded-[12]">
-            <StartLineChart
-              title="Wind Direction"
-              data={data?.formatData}
-              color="#ff006e"
-            />
+            <StartLineChart title={title} data={data?.formatData} />
           </div>
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
-            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
-              <StartTable />
+            <div>
+              <StartTable
+                date={selectedDate}
+                data={data.formatData}
+                title={title}
+                unit={unit}
+              />
             </div>
           )}
         </div>
       </div>
       <CalendarButton onChange={(date) => setSelectedDate(date)} />
+      <TimeIntervalSelection
+        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
+      />
     </div>
   );
 }

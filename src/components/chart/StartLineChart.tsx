@@ -1,5 +1,12 @@
 "use client";
-import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts";
+import {
+  CartesianGrid,
+  LabelList,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  XAxis,
+} from "recharts";
 import {
   Card,
   CardContent,
@@ -13,6 +20,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { cn } from "@/lib/utils";
 
 interface StartLineChartProps {
   title?: string;
@@ -63,52 +71,62 @@ const chartConfig = {
 
 const StartLineChart = ({ title, color, data }: StartLineChartProps) => {
   return (
-    <div className="">
+    <div className=" ">
       <Card className="bg-white">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>Day logging</CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={chartConfig}>
-            <LineChart
-              accessibilityLayer
-              data={data}
-              margin={{
-                top: 20,
-                left: 25,
-                right: 25,
-              }}
+          <div className="overflow-auto max-w-[50vw]">
+            <ChartContainer
+              className={cn("w-[45vw] max-h-[40vh]", {
+                "w-[100vw]": (data?.length ?? 0) > 24,
+                "w-[500vw]": (data?.length ?? 0) > 100,
+              })}
+              config={chartConfig}
             >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="time"
-                tickLine={false}
-                axisLine={false}
-                tick={<RotatedTick />}
-                tickMargin={8}
-                interval={0}
-              />
-              <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent indicator="line" />}
-              />
-              <Line
-                dataKey="value"
-                type="natural"
-                stroke={color ?? chartConfig?.["chart1"].color}
-                strokeWidth={2}
-                dot={{
-                  fill: "#ffffff",
-                }}
-                activeDot={{
-                  r: 6,
-                }}
-              >
-                <LabelList content={<CustomLabelList />} />
-              </Line>
-            </LineChart>
-          </ChartContainer>
+              <ResponsiveContainer width="100%">
+                <LineChart
+                  accessibilityLayer
+                  data={data}
+                  margin={{
+                    top: 20,
+                    left: 25,
+                    right: 25,
+                  }}
+                >
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    dataKey="time"
+                    tickLine={false}
+                    axisLine={false}
+                    tick={<RotatedTick />}
+                    tickMargin={8}
+                    interval={0}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent indicator="line" />}
+                  />
+                  <Line
+                    dataKey="value"
+                    type="natural"
+                    stroke={color ?? chartConfig?.["chart1"].color}
+                    strokeWidth={2}
+                    dot={{
+                      fill: "#ffffff",
+                    }}
+                    activeDot={{
+                      r: 6,
+                    }}
+                  >
+                    <LabelList content={<CustomLabelList />} />
+                  </Line>
+                </LineChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </div>
         </CardContent>
       </Card>
     </div>

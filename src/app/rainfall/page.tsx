@@ -1,15 +1,23 @@
 "use client";
-import useGetRainfall from "@/api/rainfall";
+import { useGetDefaultData } from "@/api/get-data-graph";
 import CalendarButton from "@/components/calendar-button";
 import { CardMax, CardAverrage, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
+import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
-import StartTable from "@/components/tables";
+import { StartTable } from "@/components/tables";
 import { useState } from "react";
 
 export default function Rainfall() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const { data, isLoading } = useGetRainfall();
+  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const { data, isLoading } = useGetDefaultData({
+    date: selectedDate,
+    type: "SPEED",
+    timeSelect: selectedTimeInterval,
+  });
+  const unit = "mm";
+  const title = "Rainfall";
 
   if (isLoading || !data) {
     return (
@@ -53,18 +61,26 @@ export default function Rainfall() {
         </div>
         <div className="flex justify-center">
           <div className="w-[50vw] m-3 border-4 border-black rounded-[12] ">
-            <StartLineChart title=" Carbon Dioxide" data={data?.formatData} />
+            <StartLineChart title={title} data={data?.formatData} />
           </div>
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
-            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
-              <StartTable />
+            <div>
+              <StartTable
+                date={selectedDate}
+                data={data.formatData}
+                title={title}
+                unit={unit}
+              />
             </div>
           )}
         </div>
       </div>
       <CalendarButton onChange={(date) => setSelectedDate(date)} />
+      <TimeIntervalSelection
+        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
+      />
     </div>
   );
 }

@@ -9,7 +9,6 @@ interface CalendarButtonProps {
 }
 
 const currentDate = new Date();
-console.log(currentDate);
 
 const CalendarButton = ({ onChange }: CalendarButtonProps) => {
   const [date, setDate] = useState<Date | undefined>(undefined);

@@ -1,46 +1,72 @@
 // pages/api/query.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import { influxDB, org, bucket } from "@/lib/influx";
-import { filterDate } from "@/components/utils/format";
+import { plus24Hours } from "@/components/utils/format";
 import camelcaseKeys from "camelcase-keys";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { type = "Altitude", date } = req.query;
+  const { type = "Altitude", date, timeSelect } = req.query;
   const queryApi = influxDB.getQueryApi(org);
   const dateNow = new Date();
-  const { startDate, endDate } = filterDate(dateNow) ?? {};
+  const { startDate, endDate } = plus24Hours((date as string) || dateNow) ?? {};
+  console.log(timeSelect);
+  // const fluxQuery = `
+
+  //     from(bucket: "${bucket}")
+  //       |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
+  //       |> filter(fn: (r) => r["_measurement"] == "RedStation")
+  //       |> filter(fn: (r) => r["_field"] == "${type}")
+  //       |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)
+  //       |> yield(name: "hourly_mean")
+
+  //     from(bucket: "${bucket}")
+  //       |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
+  //       |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
+  //       |> max()
+  //       |> yield(name: "max")
+
+  //     from(bucket: "${bucket}")
+  //       |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
+  //       |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
+  //       |> min()
+  //       |> yield(name: "min")
+
+  //     from(bucket: "${bucket}")
+  //       |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
+  //       |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
+  //       |> mean()
+  //       |> yield(name: "avg")
+  //   `;
+
+  const baseFilter = `
+  |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
+  |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
+`;
 
   const fluxQuery = `
-   
-      from(bucket: "${bucket}")
-        |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
-        |> filter(fn: (r) => r["_measurement"] == "RedStation")
-        |> filter(fn: (r) => r["_field"] == "${type}")
-        |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)
-        |> yield(name: "hourly_mean")
+  from(bucket: "${bucket}")
+    ${baseFilter}
+    |> aggregateWindow(every: ${timeSelect}, fn: mean, createEmpty: false)
+    |> yield(name: "hourly_mean")
 
+  from(bucket: "${bucket}")
+    ${baseFilter}
+    |> max()
+    |> yield(name: "max")
 
-      from(bucket: "${bucket}")
-        |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
-        |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
-        |> max()
-        |> yield(name: "max")
+  from(bucket: "${bucket}")
+    ${baseFilter}
+    |> min()
+    |> yield(name: "min")
 
-      from(bucket: "${bucket}")
-        |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
-        |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
-        |> min()
-        |> yield(name: "min")
-
-      from(bucket: "${bucket}")
-        |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
-        |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
-        |> mean()
-        |> yield(name: "avg")
-    `;
+  from(bucket: "${bucket}")
+    ${baseFilter}
+    |> mean()
+    |> yield(name: "avg")
+`;
 
   const results: any[] = [];
 

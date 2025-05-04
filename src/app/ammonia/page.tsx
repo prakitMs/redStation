@@ -3,17 +3,21 @@ import SideNav from "@/components/side-nav";
 import CalendarButton from "@/components/calendar-button";
 import StartLineChart from "@/components/chart";
 import { CardMax, CardMin, CardAverrage } from "@/components/card";
-import useGetAmmonia from "@/api/ammonia";
 import { useState } from "react";
 import { StartTable } from "@/components/tables";
-import { useGetDataTable } from "@/api/get-data-table";
+import { useGetDefaultData } from "@/api/get-data-graph";
+import { TimeIntervalSelection } from "@/components/selector";
 
 export default function Ammonia() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const { data, isLoading } = useGetAmmonia();
-  const { dataTable } = useGetDataTable("NH3", selectedDate);
+  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const { data, isLoading } = useGetDefaultData({
+    date: selectedDate,
+    type: "NH3",
+    timeSelect: selectedTimeInterval,
+  });
   const unit = "ppm";
-  const title = "Carbon Dioxide";
+  const title = "Ammonia";
 
   if (isLoading || !data) {
     return (
@@ -69,9 +73,10 @@ export default function Ammonia() {
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
-            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
+            <div>
               <StartTable
-                data={dataTable.dataTableFetch}
+                date={selectedDate}
+                data={data.formatData}
                 title={title}
                 unit={unit}
               />
@@ -80,6 +85,9 @@ export default function Ammonia() {
         </div>
       </div>
       <CalendarButton onChange={(date) => setSelectedDate(date)} />
+      <TimeIntervalSelection
+        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
+      />
     </div>
   );
 }

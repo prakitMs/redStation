@@ -1,17 +1,21 @@
 "use client";
-import { useGetDataTable } from "@/api/get-data-table";
-import useGetTemperature from "@/api/temperature";
+import { useGetDefaultData } from "@/api/get-data-graph";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
+import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
 import { StartTable } from "@/components/tables";
 import { useState } from "react";
 
 export default function Temperature() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const { data, isLoading } = useGetTemperature();
-  const { dataTable } = useGetDataTable("Temperature", selectedDate);
+  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const { data, isLoading } = useGetDefaultData({
+    date: selectedDate,
+    type: "Temperature",
+    timeSelect: selectedTimeInterval,
+  });
   const unit = "°C";
   const title = "Temperature";
 
@@ -65,10 +69,11 @@ export default function Temperature() {
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
-            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
+            <div>
               <StartTable
+                date={selectedDate}
+                data={data.formatData}
                 title={title}
-                data={dataTable.dataTableFetch}
                 unit={unit}
               />
             </div>
@@ -76,6 +81,9 @@ export default function Temperature() {
         </div>
       </div>
       <CalendarButton onChange={(date) => setSelectedDate(date)} />
+      <TimeIntervalSelection
+        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
+      />
     </div>
   );
 }

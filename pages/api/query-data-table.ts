@@ -21,7 +21,7 @@ export default async function handler(
         |> filter(fn: (r) => r["_measurement"] == "RedStation")
         |> filter(fn: (r) => r["_field"] == "${type}")
         |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)
-        |> yield(name: "hourly_mean")
+        |> yield(name: "minute_mean")
   `;
 
   const results: any[] = [];

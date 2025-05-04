@@ -5,14 +5,17 @@ import CalendarButton from "@/components/calendar-button";
 import StartLineChart from "@/components/chart";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import { StartTable } from "@/components/tables";
-import useGetCarbonMonoxide from "@/api/carbon-monoxide";
-import { useGetDataTable } from "@/api/get-data-table";
+import { useGetDefaultData } from "@/api/get-data-graph";
+import { TimeIntervalSelection } from "@/components/selector";
 
 export default function CarbonMonoxide() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const { data, isLoading } = useGetCarbonMonoxide();
-  const { dataTable } = useGetDataTable("CO", selectedDate);
-
+  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const { data, isLoading } = useGetDefaultData({
+    date: selectedDate,
+    type: "NH3",
+    timeSelect: selectedTimeInterval,
+  });
   const title = "Carbon Monoxide";
   const unit = "ppm";
 
@@ -65,9 +68,10 @@ export default function CarbonMonoxide() {
         </div>
         <div className="flex justify-center">
           {!!selectedDate && (
-            <div className="m-2 lg:m-5 bg-slate-800 border-solid rounded-lg w-[70vw]">
+            <div>
               <StartTable
-                data={dataTable.dataTableFetch}
+                date={selectedDate}
+                data={data.formatData}
                 title={title}
                 unit={unit}
               />
@@ -76,6 +80,9 @@ export default function CarbonMonoxide() {
         </div>
       </div>
       <CalendarButton onChange={(date) => setSelectedDate(date)} />
+      <TimeIntervalSelection
+        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
+      />
     </div>
   );
 }
