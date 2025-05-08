@@ -7,9 +7,13 @@ import { useState } from "react";
 import { StartTable } from "@/components/tables";
 import { useGetDefaultData } from "@/api/get-data-graph";
 import { TimeIntervalSelection } from "@/components/selector";
+import { DateRange } from "react-day-picker";
+import { AlertNotFound } from "@/components/alert";
 
 export default function Ammonia() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedDate, setSelectedDate] = useState<DateRange | undefined>(
+    undefined
+  );
   const [selectedTimeInterval, setSelectedTimeInterval] =
     useState<string>("1h");
   const { data, isLoading } = useGetDefaultData({
@@ -31,6 +35,9 @@ export default function Ammonia() {
         </div>
       </div>
     );
+  }
+  if (!data?.data?.length) {
+    return <AlertNotFound />;
   }
   return (
     <div className="flex h-screen">
@@ -74,7 +81,7 @@ export default function Ammonia() {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="w-[50vw] m-3 border-4 border-black rounded-[12] ">
+          <div className=" m-3 border-4 border-black rounded-[12] ">
             <StartLineChart
               title={title}
               data={data?.formatData}

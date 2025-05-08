@@ -83,7 +83,7 @@ export const MultipleMapMarker = ({ data }: MultipleMapMarkerProps) => {
   };
 
   return (
-    <div className="border-4 relative border-indigo-100 lg:h-[80vh] lg:max-w-[100vw] max-w-[95vw] h-[80vh] md:min-h-[70vh] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden  ml-5 mr-5 ">
+    <div className="border-4 relative border-black lg:h-[80vh] lg:max-w-[100vw] max-w-[95vw] h-[80vh] md:min-h-[70vh] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden  ml-5 mr-5 ">
       <MapContainer center={position1} zoom={5} className="w-full h-full z-10">
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -93,7 +93,6 @@ export const MultipleMapMarker = ({ data }: MultipleMapMarkerProps) => {
         {data?.map((item, idx) => (
           <Marker
             key={`${item.latitude}-${item.longitude}-${idx}`}
-            // key={`${item.name}`}
             position={[item.latitude, item.longitude]}
             icon={renderMarker(item.pm25)}
             eventHandlers={{

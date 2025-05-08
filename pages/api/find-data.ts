@@ -9,7 +9,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { type = "Altitude", timeSelect, dateFrom, dateTo } = req.query;
+  const { type = "Altitude", timeSelect, dateFrom, dateTo, device } = req.query;
   const queryApi = influxDB.getQueryApi(org);
 
   const newDateTo = dateTo
@@ -52,7 +52,7 @@ export default async function handler(
 
   const baseFilter = `
   |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
-  |> filter(fn: (r) => r._measurement == "RedStation" and r._field == "${type}")
+  |> filter(fn: (r) => r._measurement == "${device}" and r._field == "${type}")
 `;
 
   const fluxQuery = `

@@ -1,9 +1,9 @@
 import { Terminal } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"; // ปรับเส้นทางตามที่ใช้งาน
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export const AlertNotFound = () => {
   const handleRefresh = () => {
-    window.location.reload(); // รีเฟรชหน้าปัจจุบัน
+    window.location.reload();
   };
 
   return (

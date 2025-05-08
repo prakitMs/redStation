@@ -20,7 +20,10 @@ export class Data implements IDataItems {
     return this.data?.reduce<{ time: string; value: number }[]>(
       (resultMap, { result, value, time }) => {
         if (result !== "hourly_mean") return resultMap;
-        return [...resultMap, { time: time, value: Number(value.toFixed(2)) }];
+        return [
+          ...resultMap,
+          { time: formatDateToThaiHour(time), value: Number(value.toFixed(2)) },
+        ];
       },
       []
     );
@@ -34,7 +37,10 @@ export class Data implements IDataItems {
           return {
             ...resultMap,
           };
-        return { ...resultMap, [result]: { time: time, value } };
+        return {
+          ...resultMap,
+          [result]: { time: formatDateToThaiHour(time), value },
+        };
       },
       {}
     );

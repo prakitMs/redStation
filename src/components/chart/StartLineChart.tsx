@@ -6,6 +6,7 @@ import {
   LineChart,
   ResponsiveContainer,
   XAxis,
+  YAxis,
 } from "recharts";
 import {
   Card,
@@ -20,7 +21,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { cn } from "@/lib/utils";
 
 interface StartLineChartProps {
   title?: string;
@@ -34,7 +34,7 @@ const RotatedTick = (props: any) => {
       x={x}
       y={y}
       dy={6}
-      textAnchor="start"
+      textAnchor="end"
       transform={`rotate(-45, ${x}, ${y})`}
       className="text-[10px] fill-gray-700"
     >
@@ -80,10 +80,11 @@ const StartLineChart = ({ title, color, data }: StartLineChartProps) => {
         <CardContent>
           <div className="overflow-auto max-w-[50vw]">
             <ChartContainer
-              className={cn("w-[45vw] max-h-[40vh]", {
-                "w-[100vw]": (data?.length ?? 0) > 24,
-                "w-[700vw]": (data?.length ?? 0) > 100,
-              })}
+              style={{
+                width: `${Math.max(data?.length ?? 0, 10) * 30}px`, // เช่น 30px ต่อจุดข้อมูล
+                maxHeight: "40vh",
+                minWidth: "40vw",
+              }}
               config={chartConfig}
             >
               <ResponsiveContainer width="100%">
@@ -92,15 +93,22 @@ const StartLineChart = ({ title, color, data }: StartLineChartProps) => {
                   data={data}
                   margin={{
                     top: 20,
-                    left: 25,
+                    left: 20,
                     right: 25,
+                    bottom: 80,
                   }}
                 >
                   <CartesianGrid vertical={false} />
+                  <YAxis
+                    tick={{ fontSize: 10, fill: "#555" }}
+                    axisLine={true}
+                    tickLine={false}
+                    domain={["auto", "auto"]}
+                  />
                   <XAxis
                     dataKey="time"
-                    tickLine={false}
-                    axisLine={false}
+                    tickLine={true}
+                    axisLine={true}
                     tick={<RotatedTick />}
                     tickMargin={8}
                     interval={0}
@@ -111,7 +119,7 @@ const StartLineChart = ({ title, color, data }: StartLineChartProps) => {
                   />
                   <Line
                     dataKey="value"
-                    type="natural"
+                    type="monotone"
                     stroke={color ?? chartConfig?.["chart1"].color}
                     strokeWidth={2}
                     dot={{

@@ -9,3 +9,12 @@ export interface RawDataItem {
 export interface IDataItems {
   data: RawDataItem[];
 }
+export interface DeviceNameItem {
+  result: string;
+  table: number;
+  value: string;
+}
+
+export interface IDeviceNameItem {
+  data: DeviceNameItem[];
+}

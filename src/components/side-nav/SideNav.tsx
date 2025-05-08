@@ -8,7 +8,7 @@ const SideNav = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-gray-300 md:w-[280px] md:min-h-[2200px] lg:min-h-[2200px] w-80 px-4 py-4 flex flex-cols">
+    <nav className="bg-gray-300 sm:min-h-[5000px] md:w-[280px] md:min-h-[3500px] lg:min-h-[3000px] w-80 px-4 py-4 flex flex-cols">
       <ul className="space-y-4">
         {SIDE_MENU.map(({ hasSub, subMenu, label, link }) => (
           <li key={label} className="text-black">

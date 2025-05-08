@@ -8,9 +8,13 @@ import SideNav from "@/components/side-nav";
 import { useGetDefaultData } from "@/api/get-data-graph";
 import { TimeIntervalSelection } from "@/components/selector";
 import { StartTable } from "@/components/tables";
+import { DateRange } from "react-day-picker";
+import { AlertNotFound } from "@/components/alert";
 
 export default function SulferDioxide() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedDate, setSelectedDate] = useState<DateRange | undefined>(
+    undefined
+  );
   const [selectedTimeInterval, setSelectedTimeInterval] =
     useState<string>("1h");
   const { data, isLoading } = useGetDefaultData({
@@ -32,6 +36,10 @@ export default function SulferDioxide() {
         </div>
       </div>
     );
+  }
+
+  if (!data?.data?.length) {
+    return <AlertNotFound />;
   }
   return (
     <div className="flex h-screen">
@@ -75,7 +83,7 @@ export default function SulferDioxide() {
         </div>
 
         <div className="flex justify-center">
-          <div className="w-[50vw] m-2 border-4 border-black rounded-[12]">
+          <div className=" m-2 border-4 border-black rounded-[12]">
             <StartLineChart title="Sulfur Dioxide" data={data?.formatData} />
           </div>
         </div>

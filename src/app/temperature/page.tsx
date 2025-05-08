@@ -1,5 +1,6 @@
 "use client";
 import { useGetDefaultData } from "@/api/get-data-graph";
+import { AlertNotFound } from "@/components/alert";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
@@ -7,9 +8,12 @@ import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
 import { StartTable } from "@/components/tables";
 import { useState } from "react";
+import { DateRange } from "react-day-picker";
 
 export default function Temperature() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedDate, setSelectedDate] = useState<DateRange | undefined>(
+    undefined
+  );
   const [selectedTimeInterval, setSelectedTimeInterval] =
     useState<string>("1h");
   const { data, isLoading } = useGetDefaultData({
@@ -31,6 +35,10 @@ export default function Temperature() {
         </div>
       </div>
     );
+  }
+
+  if (!data?.data?.length) {
+    return <AlertNotFound />;
   }
   return (
     <div className="flex h-screen">
@@ -75,7 +83,7 @@ export default function Temperature() {
         </div>
 
         <div className="flex justify-center">
-          <div className="w-[50vw] m-3 border-4 border-black rounded-[12] ">
+          <div className=" m-3 border-4 border-black rounded-[12] ">
             <StartLineChart title={title} data={data?.formatData} />
           </div>
         </div>

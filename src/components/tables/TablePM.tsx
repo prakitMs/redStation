@@ -38,12 +38,16 @@ export const TablePM = ({ data, unit, date }: TableProps) => {
   const goToNext = () => {
     if (currentPage < pageCount - 1) setCurrentPage(currentPage + 1);
   };
-
-  // const Day_MOUNT_YEAR = getDateOnly(date);
+  const dateFrom = (date as DateRange).from;
+  const dateTo = (date as DateRange).to;
+  const Start_Day_MOUNT_YEAR = getDateOnly(dateFrom);
+  const Stop_Day_MOUNT_YEAR = getDateOnly(dateTo);
 
   return (
     <div>
-      {/* <div className="w-[7vw] h-[4vh] bg-slate-50">{Day_MOUNT_YEAR}</div> */}
+      <div className="w-72 h-6 bg-slate-500 rounded-sm ml-2 flex items-center justify-center text-white">
+        {Start_Day_MOUNT_YEAR} - {Stop_Day_MOUNT_YEAR}
+      </div>
 
       <div className="bg-slate-800 border-solid rounded-lg w-[70vw]">
         <Table>

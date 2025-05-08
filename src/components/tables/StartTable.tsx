@@ -9,8 +9,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { getDateOnly } from "../utils/format";
 import { DateRange } from "react-day-picker";
+import { getDateOnly } from "../utils/format";
 interface TableProps {
   title: string;
   unit: string;
@@ -39,11 +39,15 @@ export const StartTable = ({ data, title, unit, date }: TableProps) => {
   const goToNext = () => {
     if (currentPage < pageCount - 1) setCurrentPage(currentPage + 1);
   };
-  console.log(date);
-  // const Day_MOUNT_YEAR = getDateOnly(date);
+  const dateFrom = (date as DateRange).from;
+  const dateTo = (date as DateRange).to;
+  const Start_Day_MOUNT_YEAR = getDateOnly(dateFrom);
+  const Stop_Day_MOUNT_YEAR = getDateOnly(dateTo);
   return (
     <div>
-      {/* <div className="w-[7vw] h-[4vh] bg-slate-50">{Day_MOUNT_YEAR}</div> */}
+      <div className="w-72 h-6 bg-slate-500 rounded-sm ml-2 flex items-center justify-center text-white">
+        {Start_Day_MOUNT_YEAR} - {Stop_Day_MOUNT_YEAR}
+      </div>
 
       <div className="bg-slate-800 border-solid rounded-lg w-[70vw]">
         <Table>
@@ -56,8 +60,6 @@ export const StartTable = ({ data, title, unit, date }: TableProps) => {
           </TableHeader>
           <TableBody className="text-white">
             {paginatedData.map((data) => {
-              const dateObj = new Date(data?.time);
-
               return (
                 <TableRow key={data.time}>
                   <TableCell className="font-medium">{data.time}</TableCell>

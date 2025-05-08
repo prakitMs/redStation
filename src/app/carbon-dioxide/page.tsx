@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetDefaultData } from "@/api/get-data-graph";
+import { AlertNotFound } from "@/components/alert";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
@@ -17,14 +18,18 @@ export default function CarbonDioxide() {
   );
   const [selectedTimeInterval, setSelectedTimeInterval] =
     useState<string>("1h");
+  const [selectedDevice, setSelecteddDevice] = useState<string>("RedStation");
+
   const { data, isLoading } = useGetDefaultData({
     date: selectedDate,
     type: "CO2",
     timeSelect: selectedTimeInterval,
+    device: selectedDevice,
   });
+
   const unit = "ppm";
   const title = "Carbon Dioxide";
-  console.log(data);
+
   if (isLoading || !data) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
@@ -37,6 +42,9 @@ export default function CarbonDioxide() {
       </div>
     );
   }
+  if (!data?.data?.length) {
+    return <AlertNotFound />;
+  }
   return (
     <div className="flex h-screen">
       <SideNav />
@@ -44,13 +52,16 @@ export default function CarbonDioxide() {
         <div className="text-xl text-black font-semibold bg-slate-200 w-52 p-1 rounded-b-md border-double border-black">
           Carbon Dioxide (CO<sub>2</sub>)
         </div>
+        <div>Data from {selectedDevice}</div>
 
         <div className="flex justify-end gap-2 z-50">
           <div className="z-50">
-            <DeviceSelection />
+            <DeviceSelection
+              onChange={(device) => setSelecteddDevice(device)}
+            />
           </div>
 
-          <div >
+          <div>
             <CalendarButton onChange={(date) => setSelectedDate(date)} />
           </div>
 
@@ -82,7 +93,7 @@ export default function CarbonDioxide() {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="m-3 border-4 border-black rounded-[12] ">
+          <div className="m-3 border-4 border-black rounded-[12]  ">
             <StartLineChart title={title} data={data.formatData} />
           </div>
         </div>

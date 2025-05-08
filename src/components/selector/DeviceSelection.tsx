@@ -3,13 +3,13 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { AiFillCloseSquare } from "react-icons/ai";
+import { useGetDeviceName } from "@/api/device-name";
 
 interface DeviceSelectionProps {
   onChange?: (deviceSelected: string) => void;
@@ -17,12 +17,13 @@ interface DeviceSelectionProps {
 
 export const DeviceSelection = ({ onChange }: DeviceSelectionProps) => {
   const [isSelectorVisible, setIsSelectorVisible] = useState(false);
+  const { data } = useGetDeviceName();
 
   const handleValueChange = (value: string) => {
     if (onChange) {
-      onChange(value); // ส่งค่าไปยัง onChange หากมีการระบุ
+      onChange(value);
     }
-    setIsSelectorVisible(false); // ปิด selector หลังจากเลือกค่า
+    setIsSelectorVisible(false);
   };
   return (
     <div>
@@ -49,9 +50,11 @@ export const DeviceSelection = ({ onChange }: DeviceSelectionProps) => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Device</SelectLabel>
-                <SelectItem value="1m">RedStation </SelectItem>
-                <SelectItem value="1m">RedStation2 </SelectItem>
+                {data.deviceName.map((item, index) => (
+                  <SelectItem key={`${item}-${index}`} value={item}>
+                    {item}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>

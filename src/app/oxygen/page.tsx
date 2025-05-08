@@ -9,9 +9,12 @@ import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
 import { StartTable } from "@/components/tables";
 import { useState } from "react";
+import { DateRange } from "react-day-picker";
 
 export default function Oxygen() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedDate, setSelectedDate] = useState<DateRange | undefined>(
+    undefined
+  );
   const [selectedTimeInterval, setSelectedTimeInterval] =
     useState<string>("1h");
   const { data, isLoading } = useGetDefaultData({
@@ -83,7 +86,7 @@ export default function Oxygen() {
         </div>
 
         <div className="flex justify-center">
-          <div className="w-[50vw] m-2  border-4 border-black rounded-[12] ">
+          <div className=" m-2  border-4 border-black rounded-[12] ">
             <StartLineChart title={title} data={data?.formatData} />
           </div>
         </div>

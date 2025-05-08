@@ -24,4 +24,5 @@ export const API_ROUTE = {
   data: "/api/find-data",
   table: "/api/query-data-table",
   pm: "/api/find-pm",
+  device: "/api/device-query",
 };

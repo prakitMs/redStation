@@ -4,7 +4,6 @@ import { useGetDashboard } from "@/api/dashboard";
 import { CardDashboard } from "@/components/card";
 
 import { MultipleMapMarker } from "@/components/map";
-import { MultiMapProps } from "@/components/map/MultipleMapMarker";
 import { formatDateToThai } from "@/components/utils/format";
 
 export default function Dashboard() {
@@ -32,9 +31,6 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="grid lg:grid-cols-3">
-        {/* <div className="lg:col-span-3">
-          <Map {...data.mapData} />
-        </div> */}
         <div className="lg:col-span-3">
           <MultipleMapMarker data={data.formatMapData as any} />
         </div>

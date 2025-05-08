@@ -10,12 +10,14 @@ interface Props {
   date?: string | DateRange;
   type?: string;
   timeSelect?: string;
+  device?: string;
 }
 
-function generateApiPath({ date, type, timeSelect }: Props) {
+function generateApiPath({ device, date, type, timeSelect }: Props) {
   const params = new URLSearchParams();
 
   if (type) params.append("type", type);
+  if (device) params.append("device", device);
   if (date) {
     if (typeof date === "string") {
       params.append("date", date);
@@ -29,14 +31,15 @@ function generateApiPath({ date, type, timeSelect }: Props) {
   return `${API_ROUTE.data}?${params.toString()}`;
 }
 
-export function useGetDefaultData({ date, type, timeSelect }: Props) {
+export function useGetDefaultData({ device, date, type, timeSelect }: Props) {
   const { data, isLoading } = useQuery({
-    queryKey: ["get-data", type, date, timeSelect],
+    queryKey: ["get-data", device, type, date, timeSelect],
     queryFn: async () => {
       const path = generateApiPath({
         date,
         type,
         timeSelect,
+        device,
       });
 
       console.log({ path });
@@ -44,8 +47,8 @@ export function useGetDefaultData({ date, type, timeSelect }: Props) {
       const fetchData = await fetch(path);
       return await fetchData.json();
     },
-    refetchInterval: 120000, //recall 2m
-    refetchIntervalInBackground: false, //dont call when out focus
+    refetchInterval: 120000,
+    refetchIntervalInBackground: false,
     retry: false,
   });
 

@@ -1,5 +1,6 @@
 "use client";
 import { useGetDefaultData } from "@/api/get-data-graph";
+import { AlertNotFound } from "@/components/alert";
 import CalendarButton from "@/components/calendar-button";
 import { CardMax, CardAverrage, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
@@ -7,10 +8,14 @@ import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
 import { StartTable } from "@/components/tables";
 import { useState } from "react";
+import { DateRange } from "react-day-picker";
 
 export default function WindSpeed() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const [selectedDate, setSelectedDate] = useState<DateRange | undefined>(
+    undefined
+  );
+  const [selectedTimeInterval, setSelectedTimeInterval] =
+    useState<string>("1h");
   const { data, isLoading } = useGetDefaultData({
     date: selectedDate,
     type: "SPEED",
@@ -31,6 +36,10 @@ export default function WindSpeed() {
       </div>
     );
   }
+
+  if (!data?.data?.length) {
+    return <AlertNotFound />;
+  }
   return (
     <div className="flex h-screen">
       <SideNav />
@@ -40,6 +49,15 @@ export default function WindSpeed() {
           Wind Speed
         </div>
 
+        <div className="flex justify-end gap-4 z-50">
+          <div className="z-50">
+            <CalendarButton onChange={(date) => setSelectedDate(date)} />
+          </div>
+
+          <TimeIntervalSelection
+            onChange={(timeInterval) => setSelectedTimeInterval(timeInterval)}
+          />
+        </div>
         <div className="grid grid-cols-3">
           <div className="m-5">
             <CardMax
@@ -81,10 +99,6 @@ export default function WindSpeed() {
           )}
         </div>
       </div>
-      <CalendarButton onChange={(date) => setSelectedDate(date)} />
-      <TimeIntervalSelection
-        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
-      />
     </div>
   );
 }
