@@ -8,9 +8,12 @@ import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
 import { TablePM } from "@/components/tables";
 import { useState } from "react";
+import { DateRange } from "react-day-picker";
 
 export default function PaticulateMatter() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedDate, setSelectedDate] = useState<DateRange | undefined>(
+    undefined
+  );
   const [selectedTimeInterval, setSelectedTimeInterval] =
     useState<string>("1h");
   const { data, isLoading } = useGetPM({
