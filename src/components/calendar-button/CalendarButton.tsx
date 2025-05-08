@@ -1,27 +1,34 @@
 "use client";
+
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
-import { AiFillCloseSquare } from "react-icons/ai";
+import dayjs from "dayjs";
+import { DateRange } from "react-day-picker";
 
 interface CalendarButtonProps {
-  onChange?: (date: Date) => void;
+  onChange?: (date: DateRange) => void;
 }
 
-const currentDate = new Date();
-
 const CalendarButton = ({ onChange }: CalendarButtonProps) => {
-  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [date, setDate] = useState<DateRange | undefined>(undefined);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
 
-  const handleDateSelect = async (selectedDate: Date | undefined) => {
+  const handleDateSelect = async (selectedDate: DateRange | undefined) => {
     if (!selectedDate) return;
 
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate delay
 
     setDate(selectedDate);
-    onChange?.(selectedDate);
-    setIsCalendarVisible(false);
+
+    if (selectedDate.from && selectedDate.to) {
+      onChange?.(selectedDate);
+      setIsCalendarVisible(false);
+    }
+  };
+
+  const isDateDisabled = (date: Date) => {
+    return dayjs(date).isAfter(dayjs(), "day");
   };
 
   return (
@@ -29,23 +36,31 @@ const CalendarButton = ({ onChange }: CalendarButtonProps) => {
       <div className="flex justify-end">
         <Button
           onClick={() => setIsCalendarVisible((prev) => !prev)}
-          className="bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+          className="bg-[#003e78] text-white rounded-md hover:bg-blue-600 transition z-0"
         >
-          {isCalendarVisible ? "ปิดปฏิทิน" : "เลือกวันที่"}
+          {isCalendarVisible ? "Close" : "Select date"}
         </Button>
       </div>
 
       {isCalendarVisible && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-md">
-          {/* ปุ่มปิด (X) */}
-          <button
-            onClick={() => setIsCalendarVisible(false)}
-            className="absolute top-5 right-5 text-white hover:text-gray-300"
-          >
-            <AiFillCloseSquare className="w-6 h-6" />
-          </button>
-
-          <Calendar mode="single" selected={date} onSelect={handleDateSelect} />
+        <div className="absolute top-36 right-10 z-50">
+          <div className="relative z-50 p-4 bg-[#85D7E1] rounded-lg shadow-lg">
+            <Calendar
+              mode="range"
+              selected={date}
+              onSelect={handleDateSelect}
+              disabled={isDateDisabled}
+              classNames={{
+                day_outside: "text-muted-foreground",
+              }}
+            />
+            <Button
+              onClick={() => setDate(undefined)}
+              className="mt-4 bg-gray-200 text-black hover:bg-gray-400 transition"
+            >
+              รีเซ็ตวันที่
+            </Button>
+          </div>
         </div>
       )}
     </div>

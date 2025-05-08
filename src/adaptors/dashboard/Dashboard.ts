@@ -85,4 +85,33 @@ export class Dashboard implements IDataItems {
       })),
     };
   }
+
+  @Expose({ toClassOnly: true })
+  get formatMapData() {
+    const mapData = this.data?.reduce<Record<string, string | number>[]>(
+      (resultMap, { field, value, measurement }) => {
+        const findSameData = resultMap.find(
+          (resultData) => resultData?.name === measurement
+        );
+
+        if (!findSameData) {
+          return [
+            ...resultMap,
+            {
+              name: measurement,
+              [field]: value,
+            },
+          ];
+        }
+
+        const updateResult = resultMap.filter(
+          (resultData) => resultData?.name !== measurement
+        );
+
+        return [...updateResult, { ...findSameData, [field]: value }];
+      },
+      []
+    );
+    return camelcaseKeys(mapData, { deep: true });
+  }
 }

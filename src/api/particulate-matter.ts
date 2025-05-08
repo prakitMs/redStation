@@ -1,16 +1,38 @@
 import { PM } from "@/adaptors/dashboard/PM";
+import { API_ROUTE } from "@/constant/routes";
 import { useQuery } from "@tanstack/react-query";
 import { plainToInstance } from "class-transformer";
 
-export default function useGetPM() {
+interface Props {
+  date?: string | Date;
+  timeSelect?: string;
+}
+function generateApiPath({ date, timeSelect }: Props) {
+  const params = new URLSearchParams();
+
+  if (date) params.append("date", date.toString());
+  if (timeSelect) params.append("timeSelect", timeSelect);
+
+  return `${API_ROUTE.pm}?${params.toString()}`;
+}
+
+export default function useGetPM({ date, timeSelect }: Props) {
   const { data, isLoading } = useQuery({
-    queryKey: ["no2"],
+    queryKey: ["get-data-pm", date, timeSelect],
     queryFn: async () => {
-      const fetchData = await fetch("/api/find-pm");
+      const path = generateApiPath({
+        date,
+
+        timeSelect,
+      });
+
+      console.log({ path });
+
+      const fetchData = await fetch(path);
       return await fetchData.json();
     },
-    refetchInterval: 120000,
-    refetchIntervalInBackground: false,
+    refetchInterval: 120000, //recall 2m
+    refetchIntervalInBackground: false, //dont call when out focus
     retry: false,
   });
 

@@ -22,7 +22,7 @@ function Calendar({
       </h2>
       <DayPicker
         showOutsideDays={showOutsideDays}
-        className={cn("p-3 rounded-b-lg border bg-[#F8E4CF] h-full", className)}
+        className={cn("p-3 rounded-b-lg border bg-[#ffffff] h-full", className)}
         classNames={{
           months:
             "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 ",

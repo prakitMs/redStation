@@ -25,7 +25,7 @@ export function formatDateToThai(date: string | Date | undefined) {
 
 export function formatDateToThaiHour(date: string | Date | undefined) {
   if (!date) return "-";
-  return dayjs(date).tz("Asia/Bangkok").format("HH:mm");
+  return dayjs(date).tz("Asia/Bangkok").format("D MMMM YYYY HH:mm");
 }
 
 export function plus24Hours(date: string | Date | undefined) {

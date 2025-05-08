@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetDefaultData } from "@/api/get-data-graph";
+import { AlertNotFound } from "@/components/alert";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
@@ -11,7 +12,8 @@ import { useState } from "react";
 
 export default function Oxygen() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const [selectedTimeInterval, setSelectedTimeInterval] =
+    useState<string>("1h");
   const { data, isLoading } = useGetDefaultData({
     date: selectedDate,
     type: "O2",
@@ -34,6 +36,10 @@ export default function Oxygen() {
     );
   }
 
+  if (!data?.data?.length) {
+    return <AlertNotFound />;
+  }
+
   return (
     <div className="flex h-screen">
       <SideNav />
@@ -41,6 +47,16 @@ export default function Oxygen() {
       <div className="flex-1 ">
         <div className="text-xl text-black font-semibold bg-slate-200 w-24 p-1 rounded-b-md border-double border-black">
           Oxygen(O<sub>2</sub>)
+        </div>
+
+        <div className="flex justify-end gap-4 z-50">
+          <div className="z-50">
+            <CalendarButton onChange={(date) => setSelectedDate(date)} />
+          </div>
+
+          <TimeIntervalSelection
+            onChange={(timeInterval) => setSelectedTimeInterval(timeInterval)}
+          />
         </div>
 
         <div className="grid grid-cols-3">
@@ -84,10 +100,6 @@ export default function Oxygen() {
           )}
         </div>
       </div>
-      <CalendarButton onChange={(date) => setSelectedDate(date)} />
-      <TimeIntervalSelection
-        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
-      />
     </div>
   );
 }

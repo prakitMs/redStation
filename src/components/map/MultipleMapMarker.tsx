@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MarkerLog from "../marker-log/MarkerLog";
 import { getColorByValue } from "../utils/iconCondition";
 
@@ -19,7 +19,7 @@ const Marker = dynamic(
   { ssr: false }
 );
 
-export interface MapProps {
+export interface MultiMapProps {
   latitude: number;
   longitude: number;
   pm25: number;
@@ -30,21 +30,30 @@ export interface MapProps {
   name?: string;
 }
 
-const Map = ({ latitude, longitude, ...props }: MapProps) => {
-  const [leaflet, setLeaflet] = useState<any>(null);
-  const [showLog, setShowLog] = useState(false);
-  const position1: [number, number] = [latitude, longitude];
+interface MultipleMapMarkerProps {
+  data: MultiMapProps[];
+}
 
-  // props["pm2.5"]
+export const MultipleMapMarker = ({ data }: MultipleMapMarkerProps) => {
+  const defaultLocation = useMemo(() => {
+    return data?.[0];
+  }, [data]);
+
+  const [leaflet, setLeaflet] = useState<any>(null);
+  const [showLog, setShowLog] = useState<MultiMapProps>();
+  const position1: [number, number] = [
+    defaultLocation?.latitude,
+    defaultLocation?.longitude,
+  ];
+
   useEffect(() => {
     import("leaflet").then((L) => {
       setLeaflet(L);
     });
   }, []);
-
   if (!leaflet) return <div>Loading map...</div>;
 
-  const numberMarker = (pmValue: number) => {
+  const renderMarker = (pmValue: number) => {
     return leaflet.divIcon({
       className: "rounded-full",
       html: `<div style="
@@ -66,9 +75,13 @@ const Map = ({ latitude, longitude, ...props }: MapProps) => {
       iconAnchor: [20, 40],
     });
   };
-  const handleMarkerClick = () => {
-    setShowLog(true); // Show the MarkerLog when the marker is clicked
+  const handleMarkerClick = (idx: number) => {
+    setShowLog(data[idx]);
   };
+  const handleCloseDetail = () => {
+    setShowLog(undefined);
+  };
+
   return (
     <div className="border-4 relative border-indigo-100 lg:h-[80vh] lg:max-w-[100vw] max-w-[95vw] h-[80vh] md:min-h-[70vh] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden  ml-5 mr-5 ">
       <MapContainer center={position1} zoom={5} className="w-full h-full z-10">
@@ -76,18 +89,23 @@ const Map = ({ latitude, longitude, ...props }: MapProps) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker
-          position={position1}
-          icon={numberMarker(props["pm25"])}
-          eventHandlers={{
-            click: handleMarkerClick, // Trigger the function on click
-          }}
-        />
+
+        {data?.map((item, idx) => (
+          <Marker
+            key={`${item.latitude}-${item.longitude}-${idx}`}
+            // key={`${item.name}`}
+            position={[item.latitude, item.longitude]}
+            icon={renderMarker(item.pm25)}
+            eventHandlers={{
+              click: () => handleMarkerClick(idx),
+            }}
+          />
+        ))}
       </MapContainer>
 
-      {showLog && <MarkerLog {...props} onClose={() => setShowLog(false)} />}
+      {!!showLog && (
+        <MarkerLog {...showLog} onClose={() => handleCloseDetail()} />
+      )}
     </div>
   );
 };
-
-export default Map;

@@ -10,13 +10,14 @@ import { useState } from "react";
 
 export default function Sound() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const [selectedTimeInterval, setSelectedTimeInterval] =
+    useState<string>("1h");
   const { data, isLoading } = useGetDefaultData({
     date: selectedDate,
     type: "SOUND",
     timeSelect: selectedTimeInterval,
   });
-  const unit = "db";
+  const unit = "dB";
   const title = "Sound Level";
 
   if (isLoading || !data) {
@@ -38,6 +39,16 @@ export default function Sound() {
       <div className="flex-1 ">
         <div className="text-xl text-black font-semibold bg-slate-200 w-32 p-1 rounded-b-md">
           Sound Level
+        </div>
+
+        <div className="flex justify-end gap-4 z-50">
+          <div className="z-50">
+            <CalendarButton onChange={(date) => setSelectedDate(date)} />
+          </div>
+
+          <TimeIntervalSelection
+            onChange={(timeInterval) => setSelectedTimeInterval(timeInterval)}
+          />
         </div>
         <div className="grid grid-cols-3">
           <div className="m-5">
@@ -79,10 +90,6 @@ export default function Sound() {
           )}
         </div>
       </div>
-      <CalendarButton onChange={(date) => setSelectedDate(date)} />
-      <TimeIntervalSelection
-        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
-      />
     </div>
   );
 }

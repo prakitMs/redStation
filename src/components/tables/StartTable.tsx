@@ -10,13 +10,15 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { getDateOnly } from "../utils/format";
+import { DateRange } from "react-day-picker";
 interface TableProps {
   title: string;
   unit: string;
   data?: { time: string; value: number }[];
-  date: string | Date | undefined;
+  date: string | DateRange | undefined;
 }
 
+// const dateStart =
 const rowsPerPage = 20;
 
 export const StartTable = ({ data, title, unit, date }: TableProps) => {
@@ -37,11 +39,11 @@ export const StartTable = ({ data, title, unit, date }: TableProps) => {
   const goToNext = () => {
     if (currentPage < pageCount - 1) setCurrentPage(currentPage + 1);
   };
-
-  const Day_MOUNT_YEAR = getDateOnly(date);
+  console.log(date);
+  // const Day_MOUNT_YEAR = getDateOnly(date);
   return (
     <div>
-      <div className="w-[7vw] h-[4vh] bg-slate-50">{Day_MOUNT_YEAR}</div>
+      {/* <div className="w-[7vw] h-[4vh] bg-slate-50">{Day_MOUNT_YEAR}</div> */}
 
       <div className="bg-slate-800 border-solid rounded-lg w-[70vw]">
         <Table>

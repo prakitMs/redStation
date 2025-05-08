@@ -10,12 +10,12 @@ export default async function handler(
   const queryApi = influxDB.getQueryApi(org);
 
   const fluxQuery = `
-    from(bucket: "${bucket}")
-    |> range(start: -1h)
-    |> filter(fn: (r) => r["_measurement"] == "RedStation")
-    |> last()
-    |> yield(name: "dashboard")
-  `;
+  from(bucket: "${bucket}")
+  |> range(start: -1h)
+  |> filter(fn: (r) => r["_measurement"] =~ /^RedStation.*/)
+  |> last()
+  |> yield(name: "dashboard")
+`;
 
   const results: any[] = [];
 

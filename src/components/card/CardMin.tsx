@@ -11,7 +11,7 @@ export const CardMin = ({ unit, time, data }: CardMinProps) => {
 
   return (
     <div className=" min-w-[50px] h-[100px] bg-green-500 rounded-md text-white ">
-      <div className="p-2">ค่าต่ำสุด</div>
+      <div className="p-2">Minimum</div>
       <div className="flex justify-center  text-xl">
         {valueRounded} {unit}
       </div>

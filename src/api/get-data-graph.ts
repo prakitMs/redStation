@@ -4,9 +4,10 @@ import { Data } from "@/adaptors/dashboard/Data";
 import { API_ROUTE } from "@/constant/routes";
 import { useQuery } from "@tanstack/react-query";
 import { plainToInstance } from "class-transformer";
+import { DateRange } from "react-day-picker";
 
 interface Props {
-  date?: string | Date;
+  date?: string | DateRange;
   type?: string;
   timeSelect?: string;
 }
@@ -15,7 +16,14 @@ function generateApiPath({ date, type, timeSelect }: Props) {
   const params = new URLSearchParams();
 
   if (type) params.append("type", type);
-  if (date) params.append("date", date.toString());
+  if (date) {
+    if (typeof date === "string") {
+      params.append("date", date);
+    } else if (typeof date === "object" && date.from && date.to) {
+      params.append("dateFrom", date.from.toISOString());
+      params.append("dateTo", date.to.toISOString());
+    }
+  }
   if (timeSelect) params.append("timeSelect", timeSelect);
 
   return `${API_ROUTE.data}?${params.toString()}`;

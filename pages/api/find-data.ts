@@ -3,17 +3,26 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { influxDB, org, bucket } from "@/lib/influx";
 import { plus24Hours } from "@/components/utils/format";
 import camelcaseKeys from "camelcase-keys";
+import dayjs from "dayjs";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { type = "Altitude", date, timeSelect } = req.query;
+  const { type = "Altitude", timeSelect, dateFrom, dateTo } = req.query;
   const queryApi = influxDB.getQueryApi(org);
+
+  const newDateTo = dateTo
+    ? dayjs(dateTo as string)
+        .add(24, "hour")
+        .toISOString()
+    : undefined;
   const dateNow = new Date();
-  const { startDate, endDate } = plus24Hours((date as string) || dateNow) ?? {};
-  console.log(timeSelect);
-  // const fluxQuery = `
+  const { startDate, endDate } =
+    !!dateFrom && !!dateTo
+      ? { startDate: dateFrom, endDate: newDateTo }
+      : plus24Hours(dateNow);
+  // const fluxQuery = `x
 
   //     from(bucket: "${bucket}")
   //       |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))

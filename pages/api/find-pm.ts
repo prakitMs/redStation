@@ -1,17 +1,17 @@
 // pages/api/query.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import { influxDB, org, bucket } from "@/lib/influx";
-import { filterDate } from "@/components/utils/format";
+import { plus24Hours } from "@/components/utils/format";
 import camelcaseKeys from "camelcase-keys";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { type = "Altitude" } = req.query;
+  const { date, timeSelect } = req.query;
   const queryApi = influxDB.getQueryApi(org);
   const dateNow = new Date();
-  const { startDate, endDate } = filterDate(dateNow) ?? {};
+  const { startDate, endDate } = plus24Hours((date as string) || dateNow) ?? {};
 
   const fluxQuery = `
    
@@ -19,7 +19,7 @@ export default async function handler(
         |> range(start: time(v: "${startDate}"), stop: time(v: "${endDate}"))
         |> filter(fn: (r) => r["_measurement"] == "RedStation")
         |> filter(fn: (r) => r["_field"] == "PM1" or r["_field"] == "PM10" or r["_field"] == "PM100" or r["_field"] == "PM25")
-        |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)
+        |> aggregateWindow(every: ${timeSelect}, fn: mean, createEmpty: false)
         |> yield(name: "hourly_mean")
 
 

@@ -5,13 +5,18 @@ import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
 import { TimeIntervalSelection } from "@/components/selector";
+import { DeviceSelection } from "@/components/selector/DeviceSelection";
 import SideNav from "@/components/side-nav";
 import { StartTable } from "@/components/tables";
 import { useState } from "react";
+import { DateRange } from "react-day-picker";
 
 export default function CarbonDioxide() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const [selectedDate, setSelectedDate] = useState<DateRange | undefined>(
+    undefined
+  );
+  const [selectedTimeInterval, setSelectedTimeInterval] =
+    useState<string>("1h");
   const { data, isLoading } = useGetDefaultData({
     date: selectedDate,
     type: "CO2",
@@ -19,7 +24,7 @@ export default function CarbonDioxide() {
   });
   const unit = "ppm";
   const title = "Carbon Dioxide";
-
+  console.log(data);
   if (isLoading || !data) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-100 z-50">
@@ -32,7 +37,6 @@ export default function CarbonDioxide() {
       </div>
     );
   }
-
   return (
     <div className="flex h-screen">
       <SideNav />
@@ -40,6 +44,21 @@ export default function CarbonDioxide() {
         <div className="text-xl text-black font-semibold bg-slate-200 w-52 p-1 rounded-b-md border-double border-black">
           Carbon Dioxide (CO<sub>2</sub>)
         </div>
+
+        <div className="flex justify-end gap-2 z-50">
+          <div className="z-50">
+            <DeviceSelection />
+          </div>
+
+          <div >
+            <CalendarButton onChange={(date) => setSelectedDate(date)} />
+          </div>
+
+          <TimeIntervalSelection
+            onChange={(timeInterval) => setSelectedTimeInterval(timeInterval)}
+          />
+        </div>
+
         <div className="grid grid-cols-3">
           <div className="m-5">
             <CardMax
@@ -80,10 +99,6 @@ export default function CarbonDioxide() {
           )}
         </div>
       </div>
-      <CalendarButton onChange={(date) => setSelectedDate(date)} />
-      <TimeIntervalSelection
-        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
-      />
     </div>
   );
 }

@@ -90,6 +90,32 @@ export class PM implements IDataItems {
   }
 
   @Expose({ toClassOnly: true })
+  get tableData() {
+    return this.data?.reduce<Record<string, string | number>[]>(
+      (resultMap, { result, value, time, field }) => {
+        if (result !== "hourly_mean") return resultMap;
+        const formatTime = formatDateToThaiHour(time);
+        const findSameTime = resultMap?.find(
+          (data) => data.time === formatTime
+        );
+        const updateData = resultMap?.filter(
+          (data) => data.time !== formatTime
+        );
+
+        return [
+          ...updateData,
+          {
+            ...findSameTime,
+            time: formatTime,
+            [field]: Number(value.toFixed(2)),
+          },
+        ];
+      },
+      []
+    );
+  }
+
+  @Expose({ toClassOnly: true })
   get summary() {
     return this.data?.reduce<{
       [x: string]: {

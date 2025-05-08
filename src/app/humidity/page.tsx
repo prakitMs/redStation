@@ -3,7 +3,7 @@ import { useGetDefaultData } from "@/api/get-data-graph";
 import { useGetDataTable } from "@/api/get-data-table";
 import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
-import StartLineChart, { TestChart } from "@/components/chart";
+import StartLineChart from "@/components/chart";
 import { TimeIntervalSelection } from "@/components/selector";
 import SideNav from "@/components/side-nav";
 import { StartTable } from "@/components/tables";
@@ -11,7 +11,8 @@ import { useState } from "react";
 
 export default function Humidity() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [selectedTimeInterval, setSelctedTimeInterval] = useState<string>("1h");
+  const [selectedTimeInterval, setSelectedTimeInterval] =
+    useState<string>("1h");
   const { data, isLoading } = useGetDefaultData({
     date: selectedDate,
     type: "Humidity",
@@ -40,6 +41,16 @@ export default function Humidity() {
       <div className="flex-1 ">
         <div className="text-xl text-black font-semibold bg-slate-200 w-[95px] p-1 rounded-b-md border-double border-black">
           Humidity
+        </div>
+
+        <div className="flex justify-end gap-4 z-50">
+          <div className="z-50">
+            <CalendarButton onChange={(date) => setSelectedDate(date)} />
+          </div>
+
+          <TimeIntervalSelection
+            onChange={(timeInterval) => setSelectedTimeInterval(timeInterval)}
+          />
         </div>
 
         <div className="grid grid-cols-3">
@@ -83,10 +94,6 @@ export default function Humidity() {
           )}
         </div>
       </div>
-      <CalendarButton onChange={(date) => setSelectedDate(date)} />
-      <TimeIntervalSelection
-        onChange={(timeInterval) => setSelctedTimeInterval(timeInterval)}
-      />
     </div>
   );
 }

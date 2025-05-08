@@ -71,7 +71,7 @@ const chartConfig = {
 
 const StartLineChart = ({ title, color, data }: StartLineChartProps) => {
   return (
-    <div className=" ">
+    <div className="">
       <Card className="bg-white">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
@@ -82,7 +82,7 @@ const StartLineChart = ({ title, color, data }: StartLineChartProps) => {
             <ChartContainer
               className={cn("w-[45vw] max-h-[40vh]", {
                 "w-[100vw]": (data?.length ?? 0) > 24,
-                "w-[500vw]": (data?.length ?? 0) > 100,
+                "w-[700vw]": (data?.length ?? 0) > 100,
               })}
               config={chartConfig}
             >

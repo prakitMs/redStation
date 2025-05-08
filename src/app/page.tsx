@@ -3,7 +3,8 @@
 import { useGetDashboard } from "@/api/dashboard";
 import { CardDashboard } from "@/components/card";
 
-import Map from "@/components/map";
+import { MultipleMapMarker } from "@/components/map";
+import { MultiMapProps } from "@/components/map/MultipleMapMarker";
 import { formatDateToThai } from "@/components/utils/format";
 
 export default function Dashboard() {
@@ -31,9 +32,13 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="grid lg:grid-cols-3">
-        <div className="lg:col-span-2 ">
+        {/* <div className="lg:col-span-3">
           <Map {...data.mapData} />
+        </div> */}
+        <div className="lg:col-span-3">
+          <MultipleMapMarker data={data.formatMapData as any} />
         </div>
+
         <div className="grid grid-cols-5 ml-2  lg:absolute lg:-bottom-5 lg:left-0 lg:w-full">
           {[
             { label: "Very Good", color: "bg-[#3EE3E6]" },
@@ -50,12 +55,12 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
-        <div className="grid md:grid-cols-2 mt-5 md:mt-5 italic  font-bold">
+        {/* <div className="grid md:grid-cols-2 mt-5 md:mt-5 italic  font-bold">
           <CardDashboard {...data.airQuantity} />
           <CardDashboard {...data.environment} />
           <CardDashboard {...data.gas} />
           <CardDashboard {...data.weather} />
-        </div>
+        </div> */}
       </div>
     </div>
   );

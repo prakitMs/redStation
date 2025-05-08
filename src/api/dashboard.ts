@@ -17,6 +17,8 @@ export function useGetDashboard() {
     retry: false,
   });
 
-  const transformedData = plainToInstance(Dashboard, { data: data });
+  const transformedData = plainToInstance(Dashboard, {
+    data: data,
+  });
   return { data: transformedData, isLoading };
 }
