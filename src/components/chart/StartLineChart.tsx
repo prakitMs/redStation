@@ -72,16 +72,16 @@ const chartConfig = {
 const StartLineChart = ({ title, color, data }: StartLineChartProps) => {
   return (
     <div className="">
-      <Card className="bg-white">
+      <Card className="bg-white min-w-[80vw] md:min-w-[50vw] lg:min-w-[20vw] ">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardDescription>Day logging</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="overflow-auto max-w-[50vw]">
+          <div className="overflow-auto max-w-[70vw] lg:max-w-[60vw]">
             <ChartContainer
               style={{
-                width: `${Math.max(data?.length ?? 0, 10) * 30}px`, // เช่น 30px ต่อจุดข้อมูล
+                width: `${Math.max(data?.length ?? 0, 10) * 30}px`, // เช่น 30px ตอจุดข้อมูล
                 maxHeight: "40vh",
                 minWidth: "40vw",
               }}

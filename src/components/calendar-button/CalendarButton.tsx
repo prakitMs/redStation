@@ -5,6 +5,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import dayjs from "dayjs";
 import { DateRange } from "react-day-picker";
+import { AiFillCloseSquare } from "react-icons/ai";
 
 interface CalendarButtonProps {
   onChange?: (date: DateRange) => void;
@@ -45,6 +46,14 @@ const CalendarButton = ({ onChange }: CalendarButtonProps) => {
       {isCalendarVisible && (
         <div className="absolute top-36 right-10 z-50">
           <div className="relative z-50 p-4 bg-[#85D7E1] rounded-lg shadow-lg">
+            {/* ปุ่มปิด (X) */}
+            <button
+              onClick={() => setIsCalendarVisible(false)}
+              className="absolute top-5 right-5 text-white hover:text-gray-300"
+            >
+              <AiFillCloseSquare className="w-6 h-6" />
+            </button>
+
             <Calendar
               mode="range"
               selected={date}

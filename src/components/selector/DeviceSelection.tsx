@@ -37,13 +37,14 @@ export const DeviceSelection = ({ onChange }: DeviceSelectionProps) => {
       </div>
 
       {isSelectorVisible && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-md">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-md z-50">
           <button
             onClick={() => setIsSelectorVisible(false)}
             className="absolute top-5 right-5 text-white hover:text-gray-300"
           >
             <AiFillCloseSquare className="w-6 h-6" />
           </button>
+          <div className=""></div>
           <Select onValueChange={handleValueChange}>
             <SelectTrigger className="w-[180px] bg-[#BBDCFC]">
               <SelectValue placeholder="Select Device " />

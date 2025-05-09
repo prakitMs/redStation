@@ -54,8 +54,8 @@ export default function CarbonDioxide() {
         </div>
         <div>Data from {selectedDevice}</div>
 
-        <div className="flex justify-end gap-2 z-50">
-          <div className="z-50">
+        <div className="flex justify-end gap-0 md:gap-2 z-50">
+          <div className="">
             <DeviceSelection
               onChange={(device) => setSelecteddDevice(device)}
             />
@@ -71,21 +71,21 @@ export default function CarbonDioxide() {
         </div>
 
         <div className="grid grid-cols-3">
-          <div className="m-5">
+          <div className="md:m-0 lg:m-5">
             <CardMax
               data={data?.summary?.max.value as number}
               unit={unit}
               time={data?.summary?.max.time as string}
             />
           </div>
-          <div className="m-5">
+          <div className="md:m-0 lg:m-5">
             <CardMin
               data={data?.summary?.min.value as number}
               unit={unit}
               time={data?.summary?.min.time as string}
             />
           </div>
-          <div className="m-5">
+          <div className="md:m-0 lg:m-5">
             <CardAverrage
               data={data?.summary?.avg.value as number}
               unit={unit}
@@ -93,7 +93,7 @@ export default function CarbonDioxide() {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="m-3 border-4 border-black rounded-[12]  ">
+          <div className="mt-2 md:m-2 border-4 border-black rounded-[12]  ">
             <StartLineChart title={title} data={data.formatData} />
           </div>
         </div>

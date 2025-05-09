@@ -6,6 +6,7 @@ import CalendarButton from "@/components/calendar-button";
 import { CardAverrage, CardMax, CardMin } from "@/components/card";
 import StartLineChart from "@/components/chart";
 import { TimeIntervalSelection } from "@/components/selector";
+import { DeviceSelection } from "@/components/selector/DeviceSelection";
 import SideNav from "@/components/side-nav";
 import { StartTable } from "@/components/tables";
 import { useState } from "react";
@@ -17,10 +18,12 @@ export default function Humidity() {
   );
   const [selectedTimeInterval, setSelectedTimeInterval] =
     useState<string>("1h");
+  const [selectedDevice, setSelecteddDevice] = useState<string>("RedStation");
   const { data, isLoading } = useGetDefaultData({
     date: selectedDate,
     type: "Humidity",
     timeSelect: selectedTimeInterval,
+    device: selectedDevice,
   });
   const unit = "ppm";
   const title = "Humidity";
@@ -50,9 +53,15 @@ export default function Humidity() {
         <div className="text-xl text-black font-semibold bg-slate-200 w-[95px] p-1 rounded-b-md border-double border-black">
           Humidity
         </div>
+        <div>Data from {selectedDevice}</div>
 
-        <div className="flex justify-end gap-4 z-50">
-          <div className="z-50">
+        <div className="flex justify-end gap-4 ">
+          <div className="">
+            <DeviceSelection
+              onChange={(device) => setSelecteddDevice(device)}
+            />
+          </div>
+          <div className="">
             <CalendarButton onChange={(date) => setSelectedDate(date)} />
           </div>
 
@@ -62,21 +71,21 @@ export default function Humidity() {
         </div>
 
         <div className="grid grid-cols-3">
-          <div className="m-5">
+          <div className=" md:m-0 lg:m-5">
             <CardMax
               data={data?.summary?.max.value as number}
               unit="ppm"
               time={data?.summary?.max.time as string}
             />
           </div>
-          <div className="m-5">
+          <div className=" md:m-0 lg:m-5">
             <CardMin
               data={data?.summary?.min.value as number}
               unit="ppm"
               time={data?.summary?.min.time as string}
             />
           </div>
-          <div className="m-5">
+          <div className=" md:m-0 lg:m-5">
             <CardAverrage
               data={data?.summary?.avg.value as number}
               unit="ppm"
@@ -85,7 +94,7 @@ export default function Humidity() {
         </div>
 
         <div className="flex justify-center">
-          <div className=" m-2 border-4 border-black rounded-[12] ">
+          <div className="mt-2 md:m-2 border-4 border-black rounded-[12] ">
             <StartLineChart title={title} data={data?.formatData} />
           </div>
         </div>
