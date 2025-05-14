@@ -1,7 +1,8 @@
 export const PAGE_ROUTE = {
   dashboard: "/",
   data: "particulate-matter",
-  userManament: "user-manament",
+  // userManament: "user-manament",
+  dataFilter: "data-filter",
   smartg: "smart-g",
   particulateMatter: "particulate-matter",
   carbonDioxide: "carbon-dioxide",

@@ -9,10 +9,10 @@ export const TOP_MENU = [
     label: "data",
     link: PAGE_ROUTE.data,
   },
-  // {
-  //   label: "user manament",
-  //   link: PAGE_ROUTE.userManament,
-  // },
+  {
+    label: "data filter",
+    link: PAGE_ROUTE.dataFilter,
+  },
   {
     label: "smart-g",
     link: PAGE_ROUTE.smartg,

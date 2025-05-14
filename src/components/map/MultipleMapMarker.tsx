@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { useEffect, useMemo, useState } from "react";
 import MarkerLog from "../marker-log/MarkerLog";
 import { getColorByValue } from "../utils/iconCondition";
+import { cn } from "@/lib/utils";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
@@ -32,9 +33,13 @@ export interface MultiMapProps {
 
 interface MultipleMapMarkerProps {
   data: MultiMapProps[];
+  className?: string;
 }
 
-export const MultipleMapMarker = ({ data }: MultipleMapMarkerProps) => {
+export const MultipleMapMarker = ({
+  data,
+  className,
+}: MultipleMapMarkerProps) => {
   const defaultLocation = useMemo(() => {
     return data?.[0];
   }, [data]);
@@ -60,12 +65,13 @@ export const MultipleMapMarker = ({ data }: MultipleMapMarkerProps) => {
             background-color: ${getColorByValue(pmValue)};
             color: black;
             font-weight: bold;
+            font-size:8px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            width: 40px; 
-            height: 40px;
+            width: 22px; 
+            height: 22px;
             text-align: center;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
           ">
@@ -83,7 +89,12 @@ export const MultipleMapMarker = ({ data }: MultipleMapMarkerProps) => {
   };
 
   return (
-    <div className="border-4 relative border-black lg:h-[80vh] lg:max-w-[100vw] max-w-[95vw] h-[80vh] md:min-h-[70vh] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden  ml-5 mr-5 ">
+    <div
+      className={cn(
+        "border-4 relative border-black lg:h-[80vh] lg:max-w-[100vw] max-w-[95vw] h-[80vh] md:min-h-[70vh] flex justify-center items-center rounded-2xl shadow-lg overflow-hidden  ml-5 mr-5 ",
+        className
+      )}
+    >
       <MapContainer center={position1} zoom={5} className="w-full h-full z-10">
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
