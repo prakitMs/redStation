@@ -42,9 +42,9 @@ export default function CarbonDioxide() {
       </div>
     );
   }
-  if (!data?.data?.length) {
-    return <AlertNotFound />;
-  }
+  // if (!data?.data?.length) {
+  //   return <AlertNotFound />;
+  // }
   return (
     <div className="flex h-screen">
       <SideNav />
@@ -56,9 +56,9 @@ export default function CarbonDioxide() {
 
         <div className="flex justify-end gap-0 md:gap-2 z-50">
           <div className="">
-            <DeviceSelection
+            {/* <DeviceSelection
               onChange={(device) => setSelecteddDevice(device)}
-            />
+            /> */}
           </div>
 
           <div>
@@ -73,21 +73,21 @@ export default function CarbonDioxide() {
         <div className="grid grid-cols-3">
           <div className="md:m-0 lg:m-5">
             <CardMax
-              data={data?.summary?.max.value as number}
+              data={data?.summary?.max?.value as number}
               unit={unit}
-              time={data?.summary?.max.time as string}
+              time={data?.summary?.max?.time as string}
             />
           </div>
           <div className="md:m-0 lg:m-5">
             <CardMin
-              data={data?.summary?.min.value as number}
+              data={data?.summary?.min?.value as number}
               unit={unit}
-              time={data?.summary?.min.time as string}
+              time={data?.summary?.min?.time as string}
             />
           </div>
           <div className="md:m-0 lg:m-5">
             <CardAverrage
-              data={data?.summary?.avg.value as number}
+              data={data?.summary?.avg?.value as number}
               unit={unit}
             />
           </div>

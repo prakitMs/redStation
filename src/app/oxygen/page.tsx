@@ -15,12 +15,16 @@ export default function Oxygen() {
   const [selectedDate, setSelectedDate] = useState<DateRange | undefined>(
     undefined
   );
+
+  const [selectedDevice, setSelecteddDevice] = useState<string>("RedStation");
+
   const [selectedTimeInterval, setSelectedTimeInterval] =
     useState<string>("1h");
   const { data, isLoading } = useGetDefaultData({
     date: selectedDate,
     type: "O2",
     timeSelect: selectedTimeInterval,
+    device: selectedDevice,
   });
 
   const unit = "ppm";
@@ -39,9 +43,9 @@ export default function Oxygen() {
     );
   }
 
-  if (!data?.data?.length) {
-    return <AlertNotFound />;
-  }
+  // if (!data?.data?.length) {
+  //   return <AlertNotFound />;
+  // }
 
   return (
     <div className="flex h-screen">
@@ -65,21 +69,21 @@ export default function Oxygen() {
         <div className="grid grid-cols-3">
           <div className="m-2 lg:m-5">
             <CardMax
-              data={data?.summary?.max.value as number}
+              data={data?.summary?.max?.value as number}
               unit={unit}
-              time={data?.summary?.max.time as string}
+              time={data?.summary?.max?.time as string}
             />
           </div>
           <div className="m-2 lg:m-5">
             <CardMin
-              data={data?.summary?.min.value as number}
+              data={data?.summary?.min?.value as number}
               unit={unit}
-              time={data?.summary?.min.time as string}
+              time={data?.summary?.min?.time as string}
             />
           </div>
           <div className="m-2 lg:m-5">
             <CardAverrage
-              data={data?.summary?.avg.value as number}
+              data={data?.summary?.avg?.value as number}
               unit={unit}
             />
           </div>

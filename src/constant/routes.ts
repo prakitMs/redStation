@@ -25,4 +25,8 @@ export const API_ROUTE = {
   table: "/api/query-data-table",
   pm: "/api/find-pm",
   device: "/api/device-query",
+  provinces: "/api/provinces",
+  regions: "/api/regions",
+  districts: "/api/districts",
+  subDistricts: "/api/sub-districts",
 };

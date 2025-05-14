@@ -8,9 +8,8 @@ import { formatDateToThai } from "@/components/utils/format";
 
 export default function Dashboard() {
   const { data } = useGetDashboard();
-  console.log({ data });
 
-  if (!data) {
+  if (!data?.data) {
     return (
       <div className="fixed inset-0 bg-black/25 h-screen pt-[20vh]">
         <div className="loading mx-auto ">
